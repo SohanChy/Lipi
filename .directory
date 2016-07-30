@@ -1,10 +1,7 @@
 [Dolphin]
 GroupedSorting=true
 SortRole=type
-Timestamp=2016,7,29,22,37,42
+Timestamp=2016,7,29,23,3,23
 Version=3
 ViewMode=1
 VisibleRoles=Details_text,Details_size,Details_date,Details_type,CustomizedDetails
-
-[Settings]
-HiddenFilesShown=true

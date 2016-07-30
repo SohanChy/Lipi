@@ -7,7 +7,7 @@ public class Ipc{
     private String progName,execLoc;
     private List<String> command;
     private Process proc;
-    private String stdOut,stdErr;
+    public String stdOut,stdErr;
     
     Ipc(String progName){
     
@@ -65,7 +65,7 @@ public class Ipc{
     
         try{
             proc = new ProcessBuilder().command(command).redirectErrorStream(true).start();
-            showOutput();
+            saveOutput();
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -73,7 +73,19 @@ public class Ipc{
             
     }
     
-    private void showOutput(){
+    public void showOutput(){
+    saveOutput();
+    
+    System.out.println("Here is the standard output of the command:\n"
+        + stdOut);
+        
+    System.out.println("Here is the standard error of the command (if any):\n"
+        + stdErr);
+      
+    }
+    
+    public void saveOutput(){
+        stdOut = stdErr = "Empty";
         try{
                 BufferedReader stdInput = new BufferedReader(new 
                         InputStreamReader(proc.getInputStream()));
@@ -82,16 +94,14 @@ public class Ipc{
                         InputStreamReader(proc.getErrorStream()));
 
                 // read the output from the command
-                System.out.println("Here is the standard output of the command:");
-                String stdOut = null;
-                while ((stdOut = stdInput.readLine()) != null){
-                    System.out.println(stdOut);
+                while (stdInput.readLine() != null){
+                    stdOut += stdOut;
                 }
 
                 // read any errors from the attempted command
-                System.out.println("Here is the standard error of the command (if any):");
-                while ((stdErr = stdError.readLine()) != null){
-                    System.out.println(stdErr);
+          
+                while (stdError.readLine() != null){
+                    stdErr += stdErr;
                 }
             }
             catch(Exception e){

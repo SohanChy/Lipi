@@ -13,15 +13,31 @@ public class Pandoc{
         
     }
     
-    public boolean htmltoMd(String html,String outFile){
+    public String htmltoMd(String html){
+    
+        String md = null;
+        try{
+            String outFile = FileHandler.getExpiringTempFile().getCanonicalPath();
+            
+            htmltoMdFile(html,outFile);
+            
+            md = FileHandler.readFile(outFile);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return md;
+    }
+    
+    public boolean htmltoMdFile(String html,String outFile){
         
         try{
-            File tmpHtml = stringToTempFile(html);
+            File tmpHtml = FileHandler.stringToTempFile(html);
             
             List<String> params = new ArrayList<String>();
             params.addAll(Arrays.asList(paramHTMLtoMD));
             
-            System.out.println(tmpHtml.getCanonicalPath());
+            //System.out.println(tmpHtml.getCanonicalPath());
             
             params.add(tmpHtml.getCanonicalPath());
             params.add("-o");
@@ -40,38 +56,16 @@ public class Pandoc{
         return false;
     }
     
-    private File stringToTempFile(String textString){
-        File f = null;
-        try
-        { 
-            f = getTempFile();
-            
-            Writer fWriter = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(f), "UTF-8"));
-            try {
-                fWriter.write(textString);
-            } finally {
-                fWriter.close();
-            }
-            
-            System.out.println(textString);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        return f;
-    }
     
-    private File getTempFile() throws IOException{
-        File f = File.createTempFile("JavaFX_pd_", ".tmp");
-        //f.deleteOnExit();
-        return f;
-    }
     
     public static void main(String[] args){
         Pandoc PandocParser = new Pandoc();
         
-        PandocParser.htmltoMd("<h1>Hi</h1><hr><p>aaa</p>","mdtest.md");
+        for(int i = 0; i< 1000; i++){
+            PandocParser.htmltoMd(FileHandler.readFile("test.html"));
+        }
+        
+        System.out.println("DONE");
     }
     
 }
