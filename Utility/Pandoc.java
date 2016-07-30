@@ -61,9 +61,7 @@ public class Pandoc{
     public static void main(String[] args){
         Pandoc PandocParser = new Pandoc();
         
-        for(int i = 0; i< 1000; i++){
-            PandocParser.htmltoMd(FileHandler.readFile("test.html"));
-        }
+        PandocParser.htmltoMdFile(FileHandler.readFile("test.html"),"test.md");
         
         System.out.println("DONE");
     }
