@@ -11,13 +11,20 @@ public class Ipc{
     private Process proc;
     public String stdOut,stdErr;
     
-    Ipc(String progName){
+    public Ipc(String progName){
     
         setProgName(progName);
     }
     
-    public int waitFor() throws InterruptedException{
-        return proc.waitFor();
+    public int waitFor(){
+        try{
+            return proc.waitFor();
+            }
+        catch(InterruptedException e){
+            System.out.println("Process interrupted");
+            e.printStackTrace();
+            return -1;
+        }
     }
     
     public void setProgName(String progName){
@@ -75,7 +82,6 @@ public class Ipc{
     }
     
     public void showOutput(){
-    saveOutput();
     
     System.out.println("Here is the standard output of the command:\n"
         + stdOut);
@@ -86,7 +92,7 @@ public class Ipc{
     }
     
     public void saveOutput(){
-        stdOut = stdErr = "Empty";
+        stdOut = stdErr = "_";
         try{
                 BufferedReader stdInput = new BufferedReader(new 
                         InputStreamReader(proc.getInputStream()));
@@ -94,15 +100,17 @@ public class Ipc{
                 BufferedReader stdError = new BufferedReader(new 
                         InputStreamReader(proc.getErrorStream()));
 
+                        
+                String strTmp;
                 // read the output from the command
-                while (stdInput.readLine() != null){
-                    stdOut += stdOut;
+                while ( (strTmp = stdInput.readLine()) != null){
+                    stdOut += ("_" + strTmp + "\n");
                 }
 
                 // read any errors from the attempted command
           
-                while (stdError.readLine() != null){
-                    stdErr += stdErr;
+                while ( (strTmp = stdError.readLine()) != null){
+                    stdErr += ("_" + stdError  + "\n");
                 }
             }
             catch(Exception e){
@@ -110,6 +118,10 @@ public class Ipc{
             }
                 
         }
+        
+    public void destroy(){
+        proc.destroy();
+    }
         
     public static void main(String[] args){
             

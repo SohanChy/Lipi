@@ -1,24 +1,24 @@
 import hugo.*;
 import utility.*;
+import java.lang.Thread;
 
 public class TestRun{
 
     public static void main(String[] args){
     
-    
-    
-        System.out.println( System.getProperty("user.dir") );
-        HMdFileProcessor mdObject = new HMdFileProcessor("test.md");
+        Hugo testing = new Hugo("/home/sohan/Sandbox/Java/blog");
+        testing.startHugoServer();
         
+        try{
+        Thread.sleep(3000);
+        }
+        catch (Exception e){
+        }
         
-        mdObject.readHMdFile();
-        mdObject.setPostContent((mdObject.getPostContent() + "-----TEST-----"));
+        System.out.println("here");
+        testing.stopHugoServer();
         
-        mdObject.writeHMdFile();
-        
-         System.out.println(mdObject.getFrontMatter());
-         System.out.println(mdObject.getPostContent());
-    
+        //System.out.println(testing.getHugoOut());
     }
 
 }

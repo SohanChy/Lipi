@@ -9,10 +9,10 @@ public class Pandoc{
     
     private Ipc pandoc;
     private List<String> params;
-    private static String[] paramHTMLtoMD = {"-f","html","-t","markdown"};
-    private static String[] paramMDtoHTML = {"-f","markdown","-t","html"};
+    private final static String[] paramHTMLtoMD = {"-f","html","-t","markdown"};
+    private final static String[] paramMDtoHTML = {"-f","markdown","-t","html"};
     
-    Pandoc(){
+    public Pandoc(){
         pandoc = new Ipc("exec" + File.separator + "pandoc");
         
     }
