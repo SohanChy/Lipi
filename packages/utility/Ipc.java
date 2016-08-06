@@ -1,3 +1,5 @@
+package utility;
+
 import java.io.*;
 import java.util.*;
 
@@ -12,7 +14,6 @@ public class Ipc{
     Ipc(String progName){
     
         setProgName(progName);
-        setProgArgs();
     }
     
     public int waitFor() throws InterruptedException{
@@ -47,7 +48,7 @@ public class Ipc{
             File f = new File(execLoc);
 
             if(!f.exists() || f.isDirectory()){
-                System.out.println("Winduch");
+                System.out.println("Maybe its Windows?");
                 execLoc = execLoc + ".exe";
                 
                 if(!f.exists() || f.isDirectory()){

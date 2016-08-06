@@ -7,7 +7,7 @@ public class HugoFxController extends BorderPane{
     @FXML private TreeView leftPaneTreeView;
     @FXML private WebView markDownEditorWebView;
     
-    public HugoFxController throws IOException(){
+    public HugoFxController() throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(
             getClass().getResource("workspace.fxml"));
         
@@ -17,7 +17,7 @@ public class HugoFxController extends BorderPane{
         fxmlLoader.load();
         
         WebEngine webEngine = markDownEditorWebView.getEngine();
-        markDownEditorWebView = 
+        //markDownEditorWebView = 
         }
 
 }
