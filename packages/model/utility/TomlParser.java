@@ -1,4 +1,4 @@
-package utility;
+package model.utility;
 
 public class TomlParser{
     

@@ -1,4 +1,4 @@
-package utility;
+package model.utility;
 
 import java.io.*;
 import java.lang.*;
@@ -102,13 +102,6 @@ public class Pandoc{
             
         return false;
     
-    }
-    
-    public static void main(String[] args){
-        Pandoc PandocParser = new Pandoc();
-        
-        //System.out.println( PandocParser.htmlToMd( FileHandler.readFile("test.html") ) );
-        System.out.println( PandocParser.mdToHtml( "HTML" + FileHandler.readFile("test.md") ) );
     }
     
 }

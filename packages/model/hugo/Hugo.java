@@ -1,6 +1,6 @@
-package hugo;
+package model.hugo;
 
-import utility.Ipc;
+import model.utility.Ipc;
 import java.io.File;
 import java.util.*;
 import java.lang.Thread;

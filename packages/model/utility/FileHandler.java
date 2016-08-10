@@ -1,4 +1,4 @@
-package utility;
+package model.utility;
 
 import java.io.*;
 import java.lang.*;

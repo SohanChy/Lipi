@@ -1,4 +1,4 @@
-package utility;
+package model.utility;
 
 import java.io.*;
 import java.util.*;
@@ -10,6 +10,7 @@ public class Ipc{
     private List<String> command;
     private Process proc;
     public String stdOut,stdErr;
+    private boolean isDestroyed;
     
     public Ipc(String progName){
     
@@ -72,10 +73,12 @@ public class Ipc{
     public void runProc(){
     
         try{
+            isDestroyed = false;
             proc = new ProcessBuilder().command(command).redirectErrorStream(true).start();
             saveOutput();
             }
             catch(Exception e){
+                isDestroyed = true;
                 e.printStackTrace();
             }
             
@@ -105,12 +108,21 @@ public class Ipc{
                 // read the output from the command
                 while ( (strTmp = stdInput.readLine()) != null){
                     stdOut += ("_" + strTmp + "\n");
+                    
+                    if(isDestroyed){
+                        break;
+                    }
                 }
 
                 // read any errors from the attempted command
-          
-                while ( (strTmp = stdError.readLine()) != null){
-                    stdErr += ("_" + stdError  + "\n");
+                if(!isDestroyed){
+                    while ( (strTmp = stdError.readLine()) != null){
+                        stdErr += ("_" + stdError  + "\n");
+                        
+                        if(isDestroyed){
+                            break;
+                        }
+                    }
                 }
             }
             catch(Exception e){
@@ -119,23 +131,18 @@ public class Ipc{
                 
         }
         
-    public void destroy(){
-        proc.destroy();
+    public boolean isRunning() {
+        try {
+            proc.exitValue();
+            return false;
+        } catch (Exception e) {
+            return true;
+        }
     }
         
-    public static void main(String[] args){
-            
-            Ipc pandoc = new Ipc("pandoc");
-            
-            List<String> params = new ArrayList<String>();
-            
-            params.add("test.html");
-            params.add("-o");
-            params.add("test.md");
-            
-            pandoc.setProgArgs(params); 
-            
-            pandoc.runProc();
+    public void destroy(){
+        isDestroyed = true;
+        proc.destroy();
     }
 
 }

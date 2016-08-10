@@ -1,6 +1,7 @@
-package hugo;
+package model.hugo;
 
-import utility.*;
+import model.utility.TomlParser;
+import model.utility.FileHandler;
 import java.io.*;
 import java.lang.*;
 import java.util.*;
@@ -11,6 +12,7 @@ public class HMdFileProcessor{
     private String frontMatter,postContent;
     private String filePath;
     private File mdFile;
+    private boolean validMd;
     
     public HMdFileProcessor(String filePath){
         this.filePath = filePath;
@@ -45,11 +47,21 @@ public class HMdFileProcessor{
             BufferedReader br = new BufferedReader(
             new InputStreamReader(
                         new FileInputStream(mdFile), StandardCharsets.UTF_8));
-                        
-            
+                    
             String line = br.readLine();
-            if(!line.contains(TomlParser.TOML_IDENTIFIER)){
-                throw new Exception("no.toml.frontmatter");
+            for(int i=0; i < 3; i++){
+                
+                if(line.contains(TomlParser.TOML_IDENTIFIER)){
+                    break;
+                }
+                
+                //try first 3 lines
+                if(i == 2){
+                    validMd = false;
+                    throw new Exception("No toml frontmatter found");
+                    }
+                    
+                line = br.readLine();
             }
             
             frontMatter = postContent = "";
@@ -58,10 +70,6 @@ public class HMdFileProcessor{
                         line = br.readLine()) {
                     
                 frontMatter += (line + "\n"); 
-            }
-            
-            if(line == null){
-                throw new Exception("no.toml.frontmatter");
             }
             
             frontMatter = frontMatter.trim() + "\n";
@@ -75,6 +83,7 @@ public class HMdFileProcessor{
             
             postContent = postContent.trim() + "\n";
             
+            validMd = true;
             return true;
             
         }
@@ -86,7 +95,7 @@ public class HMdFileProcessor{
 
     }
     
-    public boolean writeHMdFile(){
+    public boolean writeHMdFile(boolean force){
         String combinedMdText = TomlParser.TOML_IDENTIFIER + "\n"
             + frontMatter + TomlParser.TOML_IDENTIFIER + "\n \n"
             + postContent; 
@@ -101,20 +110,23 @@ public class HMdFileProcessor{
                 }
     }
     
-    public static void main(String[] args){
+    public boolean writeHMdFile(){
     
-        HMdFileProcessor mdObject = new HMdFileProcessor("test.md");
+        try{
+            if(validMd){
+                return writeHMdFile(true);
+            }
+            else{
+            throw new Exception("Not valid HMd File.");
+            }
+        }
+        catch(Exception e) {
+            e.getMessage();
+        }
         
-        
-        mdObject.readHMdFile();
-        mdObject.setPostContent((mdObject.getPostContent() + "-----TEST-----"));
-        
-        mdObject.writeHMdFile();
-        
-//         System.out.println(mdObject.getFrontMatter());
-//         System.out.println(mdObject.getPostContent());
-    
+        return false;
     }
+    
     
 
 }

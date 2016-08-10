@@ -17,11 +17,11 @@ public class HugoFx extends Application {
     @Override
     public void start(Stage mainStage) throws Exception{
 	    
-	Parent root = FXMLLoader.load(getClass().getResource("workspace.fxml"));
+	Parent root = FXMLLoader.load(getClass().getResource("design/main_workspace.fxml"));
     
         Scene scene = new Scene(root);
 	    
-	mainStage.setTitle("FML");
+	mainStage.setTitle("HugoFx");
 	mainStage.setScene(scene);
 	mainStage.show();    
 	    
