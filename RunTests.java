@@ -11,9 +11,18 @@ public class RunTests{
         System.out.println("This is the class to run tests on features.");
         
 //         testHugo();
-            testHMdFileProcessor();
+//            testHMdFileProcessor();
+
     }
-    
+
+    public static void testTomlParser(){
+
+        String inp = testsFolder + "/tomlParserTest.md"
+
+        HMdFileProcessor mdObject = new HMdFileProcessor(inp);    
+        mdObject.readHMdFile();
+    }    
+
     public static void testHugo(){
     
         Hugo testing = new Hugo("/home/sohan/Sandbox/Java/blog");
@@ -38,7 +47,7 @@ public class RunTests{
         
         
         mdObject.readHMdFile();
-        mdObject.setPostContent((mdObject.getPostContent() + "-----TEST-----"));
+        //mdObject.setPostContent((mdObject.getPostContent() + "-----TEST-----"));
         
         mdObject.writeHMdFile(true);
         
