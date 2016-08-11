@@ -13,14 +13,28 @@ public class RunTests{
 //         testHugo();
 //            testHMdFileProcessor();
 
+        testTomlParser();
+
     }
 
     public static void testTomlParser(){
 
-        String inp = testsFolder + "/tomlParserTest.md"
+        String inp = testsFolder + "/tomlParserTest.md";
 
         HMdFileProcessor mdObject = new HMdFileProcessor(inp);    
         mdObject.readHMdFile();
+        
+        TomlParser test = new TomlParser(mdObject.getFrontMatter());
+        test.readToml();
+        
+        Map<String, String> testTomlMap = test.getTomlMapStr();
+        if(testTomlMap == null){
+            System.out.println("NULLZ");
+        }
+        else
+            for(Map.Entry<String, String> entry : testTomlMap.entrySet()) {
+                    System.out.println(entry.getKey() + " : " + entry.getValue());
+                    }
     }    
 
     public static void testHugo(){

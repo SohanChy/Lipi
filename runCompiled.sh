@@ -1,2 +1,2 @@
 #!/bin/bash
-java -cp build:. $1
+java -cp build:.:extjars/* $1
