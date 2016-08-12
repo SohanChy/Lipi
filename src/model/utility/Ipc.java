@@ -103,7 +103,6 @@ public class Ipc {
             BufferedReader stdError = new BufferedReader(new
                     InputStreamReader(proc.getErrorStream()));
 
-
             String strTmp;
             // read the output from the command
             while ((strTmp = stdInput.readLine()) != null) {

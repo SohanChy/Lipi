@@ -21,7 +21,6 @@ class RunTests {
         testHMdFileProcessor();
 
         testTomlParser();
-
     }
 
     private static void testTomlParser() {
