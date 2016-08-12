@@ -1,2 +1,0 @@
-# HugoFx
-HugoFX Java project

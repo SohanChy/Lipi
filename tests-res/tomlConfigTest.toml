@@ -1,0 +1,24 @@
+BaseURL = "/"
+LanguageCode = "en-us"
+SectionPagesMenu = "main"
+Title = "Sohan's Blog"
+canonifyurls = true
+copyright = "&copy; 2016 Sohan Chowdhury, all rights reserved."
+disqusShortname = "sohansblog"
+paginate = 10
+pluralizeListTitles = false
+theme = "sohan-light-cards"
+[Params]
+Author = "Sohan Chowdhury"
+Birth = "Mon, Jul 8, 1996"
+DateForm = "Mon, Jan 2, 2006"
+Disqus = "sohansblog"
+Facebook = "http://facebook.com/sifat3d"
+Github = "http://github.com/SohanChy"
+GoogleAnalyticsUserID = "UA-73459303-1"
+ShowRelatedPost = true
+ShowTagCloud = true
+SyntaxHighlightTheme = "default.min.css"
+Twitter = "http://twitter.com/iamsohan"
+[Taxonomies]
+tags = "tags"
