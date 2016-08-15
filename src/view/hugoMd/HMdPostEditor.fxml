@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import view.markdown.MarkdownEditorControl?>
+<?import view.toml.TomlEditorControl?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+         prefHeight="600.0" prefWidth="1100.0" type="javafx.scene.layout.AnchorPane"
+         xmlns="http://javafx.com/javafx/8.0.102-ea">
+    <padding>
+        <Insets top="5.0"/>
+    </padding>
+    <SplitPane dividerPositions="0.72" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <MarkdownEditorControl fx:id="markdownEditorControl" AnchorPane.bottomAnchor="0.0"
+                                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                   AnchorPane.topAnchor="0.0"/>
+        </AnchorPane>
+        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="643.0" prefWidth="160.0"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                    <ScrollPane hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0"
+                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                AnchorPane.topAnchor="0.0">
+                        <TomlEditorControl fx:id="tomlEditorControl"/>
+                    </ScrollPane>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                    <VBox prefHeight="114.0" prefWidth="301.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0">
+                        <ToolBar fx:id="rightToolBar">
+                            <Button fx:id="saveButton" mnemonicParsing="false"
+                                    onAction="#onSaveButton" text="Save"/>
+                            <Button mnemonicParsing="false" onAction="#onReloadButton"
+                                    text="Reload"/>
+                            <Button mnemonicParsing="false" text="Preview"/>
+                            <Button mnemonicParsing="false" text="Delete"/>
+                        </ToolBar>
+                        <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER"
+                               prefHeight="45.0" prefWidth="301.0" text=" . . . "
+                               textAlignment="CENTER"/>
+                    </VBox>
+                </AnchorPane>
+            </SplitPane>
+        </AnchorPane>
+    </SplitPane>
+</fx:root>

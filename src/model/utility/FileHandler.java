@@ -19,6 +19,7 @@ public class FileHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        assert encoded != null;
         return new String(encoded, encoding);
     }
 
@@ -30,12 +31,9 @@ public class FileHandler {
     public static void writeFile(String textString, File f, Charset encoding)
             throws IOException {
 
-        Writer fWriter = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(f), encoding));
-        try {
+        try (Writer fWriter = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(f), encoding))) {
             fWriter.write(textString);
-        } finally {
-            fWriter.close();
         }
     }
 

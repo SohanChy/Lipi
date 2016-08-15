@@ -58,7 +58,7 @@ public class HMdFileProcessor {
 
                 //try first 3 lines
                 if (i == 2) {
-                    throw new Exception("No toml frontmatter found, Invalid or Empty Hugo Markdown file.");
+                    throw new Exception("No toml front matter found, Invalid or Empty Hugo Markdown file.");
                 } else if (line.contains(TomlUtils.TOML_IDENTIFIER)) {
                     break;
                 }

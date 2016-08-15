@@ -7,8 +7,8 @@ slug = "spf13-vim-3-0-release-and-new-website"
 tags = "[.vimrc, plugins, spf13-vim, vim]"
 +++
  
-An h1 header
-============
+An h1 header A
+==============
 
 Paragraphs are sepa rated by a blank line.
 

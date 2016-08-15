@@ -35,7 +35,7 @@ public class Hugo {
         hugo.showOutput();
     }
 
-    //do not call this without a seperate thread
+    //do not call this without a separate thread
     public void runHugoServer() {
 
         System.out.println("Server src" + srcDir);

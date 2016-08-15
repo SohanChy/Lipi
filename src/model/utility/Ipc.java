@@ -62,7 +62,7 @@ public class Ipc {
             execLoc = execLoc + ".exe";
 
             if (!f.exists() || f.isDirectory()) {
-//                System.out.println("File not found at all");
+                System.out.println("File not found at all");
             }
 
         } else {
