@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by sohan on 8/12/16.
+ * Created by Sohan Chowdhury on 8/12/16.
+ Website: sohanchy.com
+ Email: sifat3d@gmail.com
  */
 class TomlEntryEditor extends FlowPane {
 
@@ -19,12 +21,13 @@ class TomlEntryEditor extends FlowPane {
 
     private TomlEntryEditor(String key) {
         super();
-        this.setStyle("-fx-border-width: 0 0 2 0; -fx-border-color: white;");
-        this.getStylesheets().add(getClass().getResource("toml_entry_editor.css").toExternalForm());
-
+        this.getStylesheets().add(getClass().getResource("toml_editor.css").toExternalForm());
         keyLabel = new Label(key);
-        keyLabel.setPrefWidth(150.0);
-        keyLabel.setLineSpacing(3);
+        keyLabel.setMinWidth(60.0);
+        keyLabel.setLineSpacing(2);
+        this.setStyle("-fx-border-color: #ECEFF1;\n"
+                + "-fx-border-width: 0 0 2 0; \n"
+                + "-fx-padding: 5 0 5 0");
     }
 
     TomlEntryEditor(String key, String value) {
@@ -45,16 +48,18 @@ class TomlEntryEditor extends FlowPane {
 
         if (value.length() > 30) {
             TextArea valueTextArea = new TextArea(value);
-            valueTextArea.setPrefColumnCount(14);
-            valueTextArea.setPrefRowCount(1);
-            valueTextArea.prefHeight(20);
-            valueTextArea.setWrapText(true);
+            valueTextArea.setPrefColumnCount(16);
 
+            int cols = value.length() / 30;
+            valueTextArea.setPrefRowCount(cols);
+//            valueTextArea.prefHeight(20);
+            valueTextArea.setWrapText(true);
             valueTextControl = valueTextArea;
         } else {
             TextField valueTextField = new TextField(value);
-            valueTextField.setPrefColumnCount(15);
+            valueTextField.setPrefColumnCount(18);
             valueTextControl = valueTextField;
+
         }
 
     }

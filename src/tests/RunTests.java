@@ -17,10 +17,10 @@ class RunTests {
 
         System.out.println("This is the class to run tests on features.");
 
-        testHugo();
+//        testHugo();
         testHMdFileProcessor();
 
-        testTomlParser();
+//        testTomlParser();
     }
 
     private static void testTomlParser() {
@@ -63,10 +63,10 @@ class RunTests {
         mdObject.readHMdFile();
         //mdObject.setPostContent((mdObject.getPostContent() + "-----TEST-----"));
 
-        mdObject.writeHMdFile(true);
+        mdObject.writeHMdFile();
 
-        //         System.out.println(mdObject.getFrontMatter());
-        //         System.out.println(mdObject.getPostContent());
+        System.out.println(mdObject.getFrontMatter());
+        System.out.println(mdObject.getPostContent());
 
     }
 

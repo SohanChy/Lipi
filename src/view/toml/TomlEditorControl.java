@@ -1,13 +1,10 @@
 package view.toml;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.toml.TomlParser;
+import model.toml.TomlString;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,12 +12,30 @@ import java.util.List;
 import java.util.Map;
 
 public class TomlEditorControl extends VBox {
-    private final List<Pane> tomlEntry;
-    private final String groupKey;
+    private List<Pane> tomlEntry;
+    private String groupKey;
     private Map<String, Object> tomlMap;
     private TomlParser tomlParser;
 
     private TomlEditorControl(Map<String, Object> tomlMap, String groupKey) {
+        setTomlMap(tomlMap, groupKey);
+    }
+
+    public TomlEditorControl() {
+        //Empty Constructor
+    }
+
+    public TomlEditorControl(TomlParser tomlParser) {
+        setTomlParser(tomlParser);
+    }
+
+    public TomlEditorControl(String tomlString) {
+        setTomlString(tomlString);
+    }
+
+    private void setTomlMap(Map<String, Object> tomlMap, String groupKey) {
+        this.getChildren().clear();
+
         this.tomlMap = tomlMap;
         this.groupKey = groupKey;
 
@@ -30,47 +45,8 @@ public class TomlEditorControl extends VBox {
         this.getChildren().addAll(tomlEntry);
     }
 
-    private TomlEditorControl(Map<String, Object> tomlMap) {
-        this(tomlMap, null);
-    }
-
-    public TomlEditorControl(TomlParser tomlParser) {
-        this(tomlParser.getTomlMap());
-        this.tomlParser = tomlParser;
-
-        if (groupKey == null) {
-            addSaveButton();
-        }
-    }
-
     private String getGroupKey() {
         return groupKey;
-    }
-
-    private void addSaveButton() {
-
-        VBox vb = new VBox();
-
-        Button saveButton = new Button("Save");
-        saveButton.setPrefWidth(150);
-        saveButton.setOnAction(new EventHandler<ActionEvent>() {
-            TomlParser tomlParser;
-
-            @Override
-            public void handle(ActionEvent event) {
-                tomlParser.setTomlMap(readBackTomlMap());
-            }
-
-            public EventHandler<ActionEvent> setToml(TomlParser tomlParser) {
-                this.tomlParser = tomlParser;
-                return this;
-            }
-        }.setToml(tomlParser));
-
-        vb.getChildren().add(saveButton);
-        vb.setAlignment(Pos.CENTER);
-
-        this.getChildren().add(vb);
     }
 
     private void buildTomlEditor() {
@@ -111,18 +87,32 @@ public class TomlEditorControl extends VBox {
         return this.tomlParser;
     }
 
+    public void setTomlParser(TomlParser tomlParser) {
+        this.tomlParser = tomlParser;
+        setTomlMap(tomlParser.getTomlMap(), null);
+
+        /*if (groupKey == null) {
+            addSaveButton();
+        }*/
+    }
+
+    public String getTomlString() {
+        tomlParser.setTomlMap(readBackTomlMap());
+        return this.tomlParser.toString();
+    }
+
+    public void setTomlString(String tomlS) {
+        this.tomlParser = new TomlString(tomlS);
+        setTomlParser(this.tomlParser);
+    }
+
     private class LabelVBox extends VBox {
         public LabelVBox(String text) {
             super();
-            this.getStylesheets().add(getClass().getResource("toml_entry_editor.css").toExternalForm());
+            this.getStylesheets().add(getClass().getResource("toml_editor.css").toExternalForm());
             this.setSpacing(5);
 
             Label label = new Label(text);
-            label.setStyle("-fx-padding-bottom: 100;\n" +
-                    "-fx-font-size:14px;" +
-                    "-fx-text-fill: Blue;" +
-                    "-fx-border-width: 0 0 2 0; -fx-border-color: green;");
-
             this.getChildren().add(label);
         }
     }

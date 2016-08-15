@@ -1,0 +1,15 @@
+.split-pane:horizontal > .split-pane-divider {
+   -fx-background-color: transparent;
+}
+.split-pane:vertical > .split-pane-divider {
+   -fx-background-color: transparent;
+}
+
+.split-pane, .anchor-pane, .tool-bar, .html-editor, .scroll-pane, .v-box, .h-box, .tab-pane {
+    -fx-background-color: #CFD8DC;
+    -fx-padding: 0 0 0 0;
+}
+
+anchor-pane > .tool-bar{
+    -fx-padding: 0 0 9 9;
+}

@@ -6,10 +6,17 @@ import java.io.IOException;
 import java.util.Map;
 
 public class TomlConfig implements TomlParser {
-    private final String filepath;
+    private String filepath;
     private Map<String, Object> tomlMap;
 
+    public TomlConfig() {
+    }
+
     public TomlConfig(String filepath) {
+        setTomlFile(filepath);
+    }
+
+    public void setTomlFile(String filepath) {
         this.filepath = filepath;
         readTomlMap();
     }

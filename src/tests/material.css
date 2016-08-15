@@ -14,9 +14,10 @@
     -fx-font-family: 'Roboto';
 }
 
-.icon-label .text {
+/*.icon-label .text {
     -fx-font-family: FontAwesome !important;
 }
+*/
 
 .button {
     -fx-border-color: null;
@@ -85,10 +86,11 @@
     -fx-background-color: null;
 }
 
+/*
 .base-toolbar > .action-box > .button .text {
     -fx-font-family: FontAwesome !important;
     -fx-font-size: 22px;
-}
+}*/
 
 .container-toolbar > .action-box > .button .text {
     -fx-font-size: 16px;
@@ -210,9 +212,11 @@
     -fx-padding: 0px 0px 2px 0px;
 }
 
+/*
 .menu-entry-icon .text {
     -fx-font-family: FontAwesome !important;
 }
+*/
 
 .menu-entry:highlighted .menu-entry-icon {
     -fx-text-fill: black;
@@ -225,9 +229,10 @@
     -fx-text-fill: white;
 }
 
+/*
 #application-menu-button .text {
     -fx-font-family: FontAwesome !important;
-}
+}*/
 
 .icon-number-popup {
     -fx-font-size: 9px;
@@ -508,11 +513,12 @@
     -fx-background-color: null;
 }
 
+/*
 .global-action-button > .button .text {
     -fx-font-family: FontAwesome !important;
     -fx-font-size: 36px;
     -fx-fill: white !important;
-}
+}*/
 
 .form-layout .text-field, .form-layout .text-area, .form-layout .combo-box-base, .form-layout .choice-box, .table-view .filler, .table-view .column-header {
     -fx-background-color: transparent;
