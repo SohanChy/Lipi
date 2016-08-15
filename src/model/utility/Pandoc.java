@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Pandoc {
 
-    private final static String[] paramHTMLtoMD = {"-f", "html", "-t", "markdown"};
-    private final static String[] paramMDtoHTML = {"-f", "markdown", "-t", "html"};
+    private final static String[] paramHTMLtoMD = {"-f", "html", "-t", "markdown_github"};
+    private final static String[] paramMDtoHTML = {"-f", "markdown_github", "-t", "html"};
     private final Ipc pandoc;
     private List<String> params;
 

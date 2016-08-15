@@ -58,15 +58,15 @@ public class Ipc {
         File f = new File(execLoc);
 
         if (!f.exists() || f.isDirectory()) {
-            System.out.println("Maybe its Windows?");
+//            System.out.println("Maybe its Windows?");
             execLoc = execLoc + ".exe";
 
             if (!f.exists() || f.isDirectory()) {
-                System.out.println("File not found at all");
+//                System.out.println("File not found at all");
             }
 
         } else {
-            System.out.println("File found,Assuming Linux");
+            //System.out.println("File found,Assuming Linux");
         }
 
     }
