@@ -14,12 +14,18 @@ public class HMdFileProcessor {
 
     public HMdFileProcessor(String filePath) {
         this.filePath = filePath;
-        setupFile(this.filePath);
+        setupFile();
     }
 
-    private void setupFile(String filepath) {
-        this.filePath = filePath;
-        //System.out.println(filePath);
+    public String getFileName() {
+        return mdFile.getName();
+    }
+
+    public boolean isValidMd() {
+        return validMd;
+    }
+
+    private void setupFile() {
         this.mdFile = new File(filePath);
     }
 
@@ -47,16 +53,14 @@ public class HMdFileProcessor {
                             new FileInputStream(mdFile), StandardCharsets.UTF_8));
 
             String line = br.readLine();
-            for (int i = 0; i < 3; i++) {
 
-                if (line.contains(TomlUtils.TOML_IDENTIFIER)) {
-                    break;
-                }
+            for (int i = 0; i < 3; i++) {
 
                 //try first 3 lines
                 if (i == 2) {
-                    validMd = false;
-                    throw new Exception("No toml frontmatter found");
+                    throw new Exception("No toml frontmatter found, Invalid or Empty Hugo Markdown file.");
+                } else if (line.contains(TomlUtils.TOML_IDENTIFIER)) {
+                    break;
                 }
 
                 line = br.readLine();
@@ -72,6 +76,10 @@ public class HMdFileProcessor {
 
             frontMatter = frontMatter.trim() + "\n";
 
+            if (frontMatter.isEmpty()) {
+                throw new Exception("toml is empty");
+            }
+
             for (line = br.readLine();
                  line != null;
                  line = br.readLine()) {
@@ -84,7 +92,14 @@ public class HMdFileProcessor {
             validMd = true;
             return true;
 
+        } catch (IOException e) {
+            validMd = false;
+            System.out.println("IOException: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         } catch (Exception e) {
+            validMd = false;
+            System.out.println("Some Exception: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
