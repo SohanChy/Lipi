@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+         type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8.0.102-ea"
+         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+         AnchorPane.topAnchor="0.0">
+    <padding>
+        <Insets top="5.0"/>
+    </padding>
+    <children>
+        <TreeTableView layoutX="220.0" layoutY="160.0" prefHeight="600.0" prefWidth="750.0"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0">
+            <columns>
+                <TreeTableColumn fx:id="nameCol" prefWidth="220.0" text="Name"/>
+                <TreeTableColumn fx:id="titleCol" minWidth="350.0" text="Title"/>
+                <TreeTableColumn fx:id="lastModCol" minWidth="180.0" text="Last Modified"/>
+            </columns>
+        </TreeTableView>
+    </children>
+</fx:root>

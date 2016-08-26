@@ -1,19 +1,19 @@
-package view.hugoMd;
+package view.hugo.hmd;
 
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
-import model.hugo.HMdFileProcessor;
-import view.errorhandling.ExceptionAlerter;
-import view.markdown.MarkdownEditorControl;
+import javafx.stage.Stage;
+import model.hugo.HMDFileProcessor;
+import model.utility.CallbackVisitor;
+import view.hugo.markdown.MarkdownEditorControl;
 import view.toml.TomlEditorControl;
+import view.utils.ExceptionAlerter;
+import view.utils.TimedUpdaterUtil;
 
 import java.io.IOException;
 
@@ -22,7 +22,7 @@ import java.io.IOException;
  * Website: sohanchy.com
  * Email: sifat3d@gmail.com
  */
-public class HMdPostEditorControl extends AnchorPane {
+public class HMDPostEditorControl extends AnchorPane {
     @FXML
     private TomlEditorControl tomlEditorControl;
     @FXML
@@ -31,25 +31,28 @@ public class HMdPostEditorControl extends AnchorPane {
     private ToolBar rightToolBar;
 
     @FXML
+    private Button onDashboardButton;
+    @FXML
     private Button saveButton;
     @FXML
     private Label statusLabel;
 
 
-    private HMdFileProcessor hMdFile;
+    private HMDFileProcessor hMdFile;
 
-    public HMdPostEditorControl() {
+    public HMDPostEditorControl() {
         bindFxml();
     }
 
-    public HMdPostEditorControl(HMdFileProcessor hMdFile) {
+    public HMDPostEditorControl(HMDFileProcessor hMdFile) {
         this();
         this.hMdFile = hMdFile;
         setHMdFile(hMdFile);
+
     }
 
     private void bindFxml() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("HMdPostEditor.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("HMDPostEditor.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -62,7 +65,7 @@ public class HMdPostEditorControl extends AnchorPane {
         }
     }
 
-    public void setHMdFile(HMdFileProcessor hMdFile) {
+    public void setHMdFile(HMDFileProcessor hMdFile) {
         this.hMdFile = hMdFile;
         setupEditors();
     }
@@ -71,10 +74,10 @@ public class HMdPostEditorControl extends AnchorPane {
 
         try {
             if (hMdFile.isValidMd()) {
-                System.out.println("isValid: " + hMdFile.isValidMd());
+//              System.out.println("isValid: " + hMdFile.isValidMd());
 
-                this.tomlEditorControl.setTomlString(hMdFile.getFrontMatter());
-                this.markdownEditorControl.setMdText(hMdFile.getPostContent());
+                load();
+
             } else {
                 throw new Exception("Invalid HMd File");
             }
@@ -96,6 +99,13 @@ public class HMdPostEditorControl extends AnchorPane {
         showUpdateInLabel("Reloaded.", 2000, statusLabel);
     }
 
+    @FXML
+    private void onSaveAndExit(ActionEvent event) {
+        this.save();
+        Stage stage = (Stage) this.getScene().getWindow();
+        stage.hide();
+    }
+
     //For this control, temporary status update
     private void showUpdateInLabel(String update) {
         showUpdateInLabel(update, 2000, statusLabel);
@@ -107,24 +117,12 @@ public class HMdPostEditorControl extends AnchorPane {
         String oldMsg = status.getText();
         status.setText(update);
 
-        Task<Void> sleeper = new Task<Void>() {
+        TimedUpdaterUtil.callAfter(mseconds, new CallbackVisitor() {
             @Override
-            protected Void call() throws Exception {
-                try {
-                    Thread.sleep(mseconds);
-                } catch (InterruptedException e) {
-                    ExceptionAlerter.showException(e);
-                }
-                return null;
-            }
-        };
-        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
+            public void call() {
                 status.setText(oldMsg);
             }
         });
-        new Thread(sleeper).start();
 
     }
 
@@ -135,8 +133,13 @@ public class HMdPostEditorControl extends AnchorPane {
     }
 
     private void load() {
+//        System.out.println("Read toml");
         tomlEditorControl.setTomlString(this.hMdFile.getFrontMatter());
+//        System.out.println("toml done");
+
+//        System.out.println("Read md postcontent");
         markdownEditorControl.setMdText(this.hMdFile.getPostContent());
+//        System.out.println("reading postcontent done");
     }
 
     public String getFileName() {

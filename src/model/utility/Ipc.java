@@ -20,16 +20,6 @@ public class Ipc {
         setProgName(progName);
     }
 
-    public int waitFor() {
-        try {
-            return proc.waitFor();
-        } catch (InterruptedException e) {
-            System.out.println("Process interrupted");
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
     public void setProgName(String progName) {
 
         this.progName = progName;
@@ -77,6 +67,7 @@ public class Ipc {
             isDestroyed = false;
             proc = new ProcessBuilder().command(command).redirectErrorStream(true).start();
             saveOutput();
+            proc.waitFor();
         } catch (Exception e) {
             isDestroyed = true;
             e.printStackTrace();
@@ -127,15 +118,6 @@ public class Ipc {
             e.printStackTrace();
         }
 
-    }
-
-    public boolean isRunning() {
-        try {
-            proc.exitValue();
-            return false;
-        } catch (Exception e) {
-            return true;
-        }
     }
 
     public void destroy() {

@@ -1,8 +1,9 @@
 package tests;
 
-import model.hugo.HMdFileProcessor;
+import model.hugo.HMDFileProcessor;
 import model.hugo.Hugo;
 import model.toml.TomlUtils;
+import model.utility.CallbackVisitor;
 import model.utility.FileHandler;
 import model.utility.Ipc;
 import model.utility.Pandoc;
@@ -17,17 +18,17 @@ class RunTests {
 
         System.out.println("This is the class to run tests on features.");
 
-//        testHugo();
+        testHugo();
         testHMdFileProcessor();
-
-//        testTomlParser();
+//
+        testTomlParser();
     }
 
     private static void testTomlParser() {
         String inp;
     /*
     inp = testsFolder + "/tomlParserTest.md";
-    HMdFileProcessor mdObject = new HMdFileProcessor(inp);
+    HMDFileProcessor mdObject = new HMDFileProcessor(inp);
     mdObject.readHMdFile();
 
     System.out.println(TomlUtils.readToml(mdObject.getFrontMatter()));*/
@@ -40,7 +41,12 @@ class RunTests {
     private static void testHugo() {
 
         Hugo testing = new Hugo("/home/sohan/Sandbox/Java/blog");
-        testing.startHugoServer();
+        testing.startHugoServer(new CallbackVisitor() {
+            @Override
+            public void call() {
+                System.out.println("Ended");
+            }
+        });
 
         try {
             Thread.sleep(2000);
@@ -57,7 +63,7 @@ class RunTests {
 
     private static void testHMdFileProcessor() {
 
-        HMdFileProcessor mdObject = new HMdFileProcessor(testsFolder + "/test.md");
+        HMDFileProcessor mdObject = new HMDFileProcessor(testsFolder + "/test.md");
 
 
         mdObject.readHMdFile();

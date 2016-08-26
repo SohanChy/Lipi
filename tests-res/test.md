@@ -1,16 +1,16 @@
 +++
 date = "2012-04-06"
 description = "spf13-vim is a cross platform distribution of vim plugins and resources for Vim."
-categories = "[Development, VIM]"
+categories = ["Development", "VIM"]
 title = "spf13-vim 3.0 release and new website"
 slug = "spf13-vim-3-0-release-and-new-website"
-tags = "[.vimrc, plugins, spf13-vim, vim]"
+tags = [".vimrc", "plugins", "spf13-vim", "vim"]
 +++
  
-An h1 header A
-==============
+An h1 header Aba
+================
 
-Paragraphs are sepa rated by a blank line.
+Paragraphs are &lt;h2&gt;sepa&lt;/h2&gt; rated by a blank line.
 
 2nd paragraph. *Italic*, **bold**, and `monospace`. Itemized lists
 look like:
@@ -23,12 +23,15 @@ Note that --- not considering the asterisk --- the actual text
 content starts at 4-columns in.
 
 > Block quotes are
-> written like so.
+>
+> ### written like so.
 >
 > They can span multiple paragraphs,
 > if you like.
 
 Use 3 dashes for an em-dash. Use 2 dashes for ranges (ex., "it's all
+in chapters 12--14"). Three d
+
 in chapters 12--14"). Three dots ... will be converted to an ellipsis.
 Unicode is supported. ?
 

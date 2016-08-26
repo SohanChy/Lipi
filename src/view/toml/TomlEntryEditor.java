@@ -6,7 +6,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.FlowPane;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,32 +18,49 @@ import java.util.Map;
  */
 class TomlEntryEditor extends FlowPane {
 
-    private final Label keyLabel;
+    private Label keyLabel;
     private TextInputControl valueTextControl;
 
-    private TomlEntryEditor(String key) {
+    private TomlEntryEditor() {
         super();
-        this.getStylesheets().add(getClass().getResource("toml_editor.css").toExternalForm());
+        this.getStyleClass().add("toml-entry");
+    }
+
+    private TomlEntryEditor(String key) {
+        this();
         keyLabel = new Label(key);
         keyLabel.setMinWidth(60.0);
         keyLabel.setLineSpacing(2);
-        this.setStyle("-fx-border-color: #ECEFF1;\n"
-                + "-fx-border-width: 0 0 2 0; \n"
-                + "-fx-padding: 5 0 5 0");
     }
 
     TomlEntryEditor(String key, String value) {
         this(key);
-
         initValueTextControl(value);
         this.getChildren().addAll(keyLabel, valueTextControl);
     }
 
+    public Map<String, Object> getValue() {
+        Map<String, Object> tmpMap = new HashMap<>();
 
-    public Map<String, String> getValue() {
-        Map<String, String> tmpMap = new HashMap<>();
-        tmpMap.put(keyLabel.getText(), valueTextControl.getText());
+        String value = valueTextControl.getText();
+
+        if (isStringOfArray(value)) {
+            tmpMap.put(keyLabel.getText(), stringAsList(value));
+        } else {
+            tmpMap.put(keyLabel.getText(), value);
+        }
+
         return tmpMap;
+    }
+
+    private boolean isStringOfArray(String string) {
+        return string.trim().startsWith("[");
+    }
+
+    private List<String> stringAsList(String listString) {
+        listString = listString.replace(", ", ",").replace(" ,", ",");
+        listString = listString.replace(",", ", ");
+        return Arrays.asList(listString.substring(1, listString.length() - 1).split(", "));
     }
 
     private void initValueTextControl(String value) {

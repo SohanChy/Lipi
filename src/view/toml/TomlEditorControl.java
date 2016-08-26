@@ -109,7 +109,6 @@ public class TomlEditorControl extends VBox {
     private class LabelVBox extends VBox {
         public LabelVBox(String text) {
             super();
-            this.getStylesheets().add(getClass().getResource("toml_editor.css").toExternalForm());
             this.setSpacing(5);
 
             Label label = new Label(text);

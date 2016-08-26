@@ -1,0 +1,47 @@
+.split-pane:horizontal > .split-pane-divider {
+   -fx-background-color: transparent;
+}
+.split-pane:vertical > .split-pane-divider {
+   -fx-background-color: transparent;
+}
+
+.split-pane, .anchor-pane, .tool-bar, .html-editor, .scroll-pane, .v-box, .h-box, .tab-pane, .tab-header-background, .toml-entry  {
+    -fx-background-color: #455A64;
+    -fx-padding: 0 0 0 0;
+}
+
+
+.anchor-pane > .tool-bar{
+    -fx-padding: 0 0 9 9;
+}
+
+.text, .html-editor {
+    -fx-font-family: "Siyam Rupali" !important;
+
+}
+
+.toml-entry {
+    -fx-border-color: #607D8B;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 5 0 5 0;
+}
+
+.toml-entry > .label  {
+    -fx-padding: 0 0 0 0;
+    -fx-font-size:12px;
+    -fx-text-fill: #F5F5F5;
+}
+
+.hyperlink : disabled {
+    -fx-text-fill: red;
+}
+
+//Customize Material.css
+.root {
+    -fx-basic-color: #00352C !important;
+    -fx-control-inner-background: #f0f0f0 !important;
+}
+
+.scroll-bar .track {
+    -fx-background-color: -fx-lighter-color !important;
+}

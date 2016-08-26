@@ -1,5 +1,6 @@
 package model.hugo;
 
+import model.utility.CallbackVisitor;
 import model.utility.Ipc;
 
 import java.io.File;
@@ -9,36 +10,47 @@ import java.util.List;
 public class Hugo {
     private final static String[] paramServer = {"server"};
     private final static String[] paramNewSite = {"new", "site"};
-    private final Ipc hugo;
+    private final Ipc hugoIpc;
     private final String srcDir;
-    private final String pubDir;
+    private String pubDir;
     private List<String> params;
     private Thread serverThread;
-
 
     public Hugo(String srcDir) {
         this.srcDir = srcDir;
         pubDir = srcDir + File.separator + "public";
         //         System.out.println(pubDir);
-        hugo = new Ipc("exec" + File.separator + "hugo");
+        hugoIpc = new Ipc("exec" + File.separator + "hugo");
     }
 
-    public void hugoBuild() {
+    public String getSrcDir() {
+        return srcDir;
+    }
+
+    public String getPubDir() {
+        return pubDir;
+    }
+
+    public void setPubDir(String pubDir) {
+        this.pubDir = pubDir;
+    }
+
+    protected void hugoBuild() {
         params = new ArrayList<String>();
         params.add("--source");
         params.add(srcDir);
         params.add("--destination");
         params.add(pubDir);
 
-        hugo.setProgArgs(params);
-        hugo.runProc();
-        hugo.showOutput();
+        hugoIpc.setProgArgs(params);
+        hugoIpc.runProc();
+        hugoIpc.showOutput();
     }
 
     //do not call this without a separate thread
-    public void runHugoServer() {
+    private void runHugoServer(CallbackVisitor callback) {
 
-        System.out.println("Server src" + srcDir);
+        System.out.println("Server src: " + srcDir);
 
         params = new ArrayList<String>();
         params.add("server");
@@ -46,24 +58,43 @@ public class Hugo {
         params.add("--source");
         params.add(srcDir);
 
-        hugo.setProgArgs(params);
-        hugo.runProc();
-        hugo.waitFor();
-        hugo.showOutput();
+        hugoIpc.setProgArgs(params);
+        hugoIpc.runProc();
+        hugoIpc.showOutput();
+        callback.call();
     }
 
-    public boolean startHugoServer() {
+    public void runHugoBuild(CallbackVisitor callBack) {
+        HugoThread hugoBuilderThread = new HugoThread(this) {
+            public void run() {
+                hugo.hugoBuild();
+            }
+        };
+        hugoBuilderThread.start();
+        callBack.call();
+    }
+
+    public boolean startHugoServer(CallbackVisitor callback) {
         if (serverThread == null) {
-            serverThread = new hugoServerThread(this);
+            serverThread = new HugoThread(this) {
+                public void run() {
+                    hugo.runHugoServer(callback);
+                }
+            };
+
             serverThread.start();
             return true;
         }
         return false;
     }
 
+    public boolean isServerAlive() {
+        return (serverThread.getState() != Thread.State.TERMINATED);
+    }
+
     public boolean stopHugoServer() {
         if (serverThread != null) {
-            hugo.destroy();
+            hugoIpc.destroy();
             serverThread = null;
             return true;
         }
@@ -72,19 +103,18 @@ public class Hugo {
     }
 
     public String getHugoOut() {
-        return hugo.stdOut;
+        return hugoIpc.stdOut;
     }
 
-    private class hugoServerThread extends Thread {
-        private final Hugo hugo;
+    private abstract class HugoThread extends Thread {
+        public final Hugo hugo;
 
-        private hugoServerThread(Hugo hugo) {
+        private HugoThread(Hugo hugo) {
             this.hugo = hugo;
+//            this.setDaemon(true);
         }
 
-        public void run() {
-            hugo.runHugoServer();
-        }
+        public abstract void run();
     }
 
 }

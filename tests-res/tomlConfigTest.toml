@@ -7,7 +7,9 @@ copyright = "&copy; 2016 Sohan Chowdhury, all rights reserved."
 disqusShortname = "sohansblog"
 paginate = 10
 pluralizeListTitles = false
+cat = ["dog as","as dsa","asd ds"]
 theme = "sohan-light-cards"
+dog = ["1","2","3"]
 [Params]
 Author = "Sohan Chowdhury"
 Birth = "Mon, Jul 8, 1996"

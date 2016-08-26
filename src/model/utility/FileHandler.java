@@ -28,6 +28,10 @@ public class FileHandler {
         return readFile(path, StandardCharsets.UTF_8);
     }
 
+    public static boolean makeDir(String path) {
+        return new File(path).mkdir();
+    }
+
     public static void writeFile(String textString, File f, Charset encoding)
             throws IOException {
 

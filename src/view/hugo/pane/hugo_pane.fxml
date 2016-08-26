@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+         minWidth="-Infinity" prefHeight="500.0" prefWidth="292.0" type="javafx.scene.control.Accordion"
+         xmlns="http://javafx.com/javafx/8.0.102-ea">
+    <panes>
+        <TitledPane fx:id="blogTitledPane" animated="false" text="Blog (Live Preview, Publish)">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="421.0" prefWidth="290.0" spacing="10"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <children>
+                                <Button fx:id="liveBlogServerToggleButton" alignment="CENTER" contentDisplay="CENTER"
+                                        mnemonicParsing="false" onAction="#onLiveBlogServerToggle"
+                                        text="Start Live Blog Server"/>
+                                <Hyperlink fx:id="openBlogInBrowserButton" disable="true"
+                                           onAction="#onOpenBlogInBrowserButton" text="Open Blog in Browser"/>
+                                <Button fx:id="buildBlogButton" alignment="CENTER" contentDisplay="CENTER"
+                                        mnemonicParsing="false" onAction="#onBuildBlog" text="Build Blog"/>
+                                <Label fx:id="buildStatusLabel" text="Build Status: "/>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="PrefTitledPane" animated="false" text="Preferences (Just How You Like It)">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="421.0" prefWidth="290.0" spacing="10"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <children>
+                                <FlowPane prefHeight="36.0" prefWidth="270.0">
+                                    <children>
+                                        <Label prefHeight="34.0" prefWidth="86.0" text="Blog Title:"/>
+                                        <TextField prefHeight="26.0" prefWidth="184.0"/>
+                                    </children>
+                                </FlowPane>
+                                <FlowPane prefHeight="36.0" prefWidth="270.0">
+                                    <children>
+                                        <Label prefHeight="34.0" prefWidth="86.0" text="Author:"/>
+                                        <TextField prefHeight="26.0" prefWidth="184.0"/>
+                                    </children>
+                                </FlowPane>
+                                <FlowPane prefHeight="36.0" prefWidth="270.0">
+                                    <children>
+                                        <Label prefHeight="34.0" prefWidth="86.0" text="Theme: "/>
+                                        <ChoiceBox prefHeight="26.0" prefWidth="183.0"/>
+                                    </children>
+                                </FlowPane>
+                                <FlowPane prefHeight="36.0" prefWidth="270.0">
+                                    <children>
+                                        <Label prefHeight="34.0" prefWidth="86.0" text="disqus"/>
+                                        <TextField prefHeight="26.0" prefWidth="181.0"/>
+                                    </children>
+                                </FlowPane>
+                                <AnchorPane prefHeight="40.0" prefWidth="270.0">
+                                    <children>
+                                        <Button layoutX="220.0" layoutY="7.0" mnemonicParsing="false" text="Save"/>
+                                        <Button layoutX="7.0" layoutY="7.0" mnemonicParsing="false"
+                                                text="Open Advanced Config"/>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="contentTitledPane" animated="false" text="Content (Write and Create)">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="421.0" prefWidth="290.0" spacing="10"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <children>
+                                <GridPane alignment="CENTER" vgap="6.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0"
+                                                           prefWidth="95.99999237060547"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="174.00000762939453"
+                                                           minWidth="10.0" prefWidth="174.00000762939453"/>
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                    </rowConstraints>
+                                    <children>
+                                        <Label prefHeight="16.0" prefWidth="134.0" text="Write new :"/>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                            <children>
+                                                <ChoiceBox fx:id="writeContentTypeChoiceBox" layoutY="1.0"
+                                                           prefHeight="30.0" prefWidth="175.0"
+                                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1"
+                                                    GridPane.rowIndex="1">
+                                            <children>
+                                                <Button fx:id="writeButton" alignment="CENTER" contentDisplay="CENTER"
+                                                        layoutX="122.0" layoutY="1.0" mnemonicParsing="false"
+                                                        onAction="#onWriteButton" text="Write"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </GridPane>
+                                <GridPane alignment="CENTER" vgap="6.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0"
+                                                           prefWidth="95.99999237060547"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="174.00000762939453"
+                                                           minWidth="10.0" prefWidth="174.00000762939453"/>
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                    </rowConstraints>
+                                    <children>
+                                        <Label prefHeight="16.0" prefWidth="134.0" text="New Type:"/>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                            <children>
+                                                <TextField fx:id="contentTypeTextField" layoutY="1.0" prefHeight="30.0"
+                                                           prefWidth="175.0" AnchorPane.bottomAnchor="0.0"
+                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                           AnchorPane.topAnchor="0.0"/>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1"
+                                                    GridPane.rowIndex="1">
+                                            <children>
+                                                <Button fx:id="createContentTypeButton" alignment="CENTER"
+                                                        contentDisplay="CENTER" layoutX="113.0" layoutY="1.0"
+                                                        mnemonicParsing="false" onAction="#onCreateType" text="Create"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </GridPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+    </panes>
+</fx:root>

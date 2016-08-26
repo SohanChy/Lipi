@@ -6,13 +6,13 @@ import model.utility.FileHandler;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class HMdFileProcessor {
+public class HMDFileProcessor {
     private String frontMatter, postContent;
     private String filePath;
     private File mdFile;
     private boolean validMd;
 
-    public HMdFileProcessor(String filePath) {
+    public HMDFileProcessor(String filePath) {
         this.filePath = filePath;
         setupFile();
     }
@@ -54,16 +54,19 @@ public class HMdFileProcessor {
 
             String line = br.readLine();
 
-            for (int i = 0; i < 3; i++) {
+            boolean foundTomlIdentifier = false;
+            for (int i = 0; i < 3 && line != null; i++) {
 
                 //try first 3 lines
-                if (i == 2) {
-                    throw new Exception("No toml front matter found, Invalid or Empty Hugo Markdown file.");
-                } else if (line.contains(TomlUtils.TOML_IDENTIFIER)) {
+                if (line.contains(TomlUtils.TOML_IDENTIFIER)) {
+                    foundTomlIdentifier = true;
                     break;
                 }
 
                 line = br.readLine();
+            }
+            if (foundTomlIdentifier == false || line == null) {
+                throw new IOException("No toml front matter found, Invalid or Empty Hugo Markdown file." + filePath);
             }
 
             frontMatter = postContent = "";
@@ -96,15 +99,21 @@ public class HMdFileProcessor {
             validMd = false;
             System.out.println("IOException: " + e.getMessage());
             e.printStackTrace();
+            setNull();
             return false;
         } catch (Exception e) {
             validMd = false;
-            System.out.println("Some Exception: " + e.getMessage());
+            System.out.println("Some Exception in file: " + filePath + "\n" + e.getMessage());
             e.printStackTrace();
+            setNull();
             return false;
         }
 
 
+    }
+
+    private void setNull() {
+        frontMatter = postContent = null;
     }
 
     public boolean writeHMdFile(boolean force) {
@@ -130,7 +139,8 @@ public class HMdFileProcessor {
                 throw new Exception("Not valid HMd File.");
             }
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return false;
