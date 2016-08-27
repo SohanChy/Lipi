@@ -1,6 +1,7 @@
 package model.toml;
 
 import model.utility.FileHandler;
+import view.utils.ExceptionAlerter;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,7 +31,11 @@ public class TomlConfig implements TomlParser {
     }
 
     public void readTomlMap() {
-        tomlMap = TomlUtils.readToml(FileHandler.readFile(filepath));
+        try {
+            tomlMap = TomlUtils.readToml(FileHandler.readFile(filepath));
+        } catch (IOException e) {
+            ExceptionAlerter.showException(e);
+        }
     }
 
     public void writeTomlMap() {

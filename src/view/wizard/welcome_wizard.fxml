@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="GridPane" maxHeight="-Infinity" maxWidth="-Infinity"
+         minHeight="-Infinity" minWidth="-Infinity" prefHeight="313.0" prefWidth="603.0"
+         xmlns="http://javafx.com/javafx/8.0.102-ea">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.0" minWidth="10.0" prefWidth="284.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="316.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <children>
+        <AnchorPane GridPane.columnSpan="2">
+            <children>
+                <Label layoutX="203.0" layoutY="25.0" prefHeight="42.0" prefWidth="194.0" text="Welcome to Lipi">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="283.0" layoutY="67.0" text="Your blog is just a few clicks away!"/>
+            </children>
+        </AnchorPane>
+        <VBox alignment="CENTER" prefHeight="182.0" prefWidth="311.0" GridPane.columnIndex="1"
+              GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <children>
+                <Label alignment="CENTER" prefHeight="32.0" prefWidth="189.0" text="Recently Opened Blogs"/>
+                <AnchorPane>
+                    <children>
+                        <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <ListView fx:id="recentBlogsList" layoutX="27.0" prefHeight="96.0" prefWidth="262.0">
+                                    <opaqueInsets>
+                                        <Insets/>
+                                    </opaqueInsets>
+                                </ListView>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <children>
+                <Button layoutX="58.0" layoutY="78.0" mnemonicParsing="false" onAction="#onCreateNewBlog"
+                        prefHeight="42.0" prefWidth="171.0" text="Create New Blog"/>
+            </children>
+        </AnchorPane>
+    </children>
+</fx:root>

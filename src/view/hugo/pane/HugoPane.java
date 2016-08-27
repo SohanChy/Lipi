@@ -1,25 +1,24 @@
 package view.hugo.pane;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import model.hugo.HMDFileCreator;
-import model.hugo.HMDFileProcessor;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.hugo.Hugo;
+import model.toml.TomlConfig;
 import model.utility.CallbackVisitor;
 import model.utility.FileHandler;
 import view.hugo.hmd.TabbedHMDPostEditor;
+import view.toml.TomlConfigEditor;
 import view.utils.ExceptionAlerter;
-import view.utils.TakeTwoInputsDialog;
 import view.utils.TimedUpdaterUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Sohan Chowdhury on 8/21/16.
@@ -28,14 +27,15 @@ import java.util.List;
  */
 public class HugoPane extends Accordion {
 
-    private String hugoSiteDirPath, hugoBuildOutputDirPath, hugoSiteContentPath;
-
-    private boolean liveServerRunning = false;
-    private Hugo hugoServer;
-    private TabbedHMDPostEditor tabbedHMDPostEditor;
-
+    //Config Editor
     @FXML
-    private TitledPane blogTitledPane, prefTitledPane, contentTitledPane;
+    private TextField confBlogTitleField, confBlogAuthorField, confBlogDisqusField;
+    @FXML
+    private ChoiceBox<DirChoiceWrapper> confBlogThemeVBox;
+    @FXML
+    private Button confBlogPrefSaveButton;
+
+    //BLOG
     @FXML
     private Button liveBlogServerToggleButton, buildBlogButton;
     @FXML
@@ -43,6 +43,7 @@ public class HugoPane extends Accordion {
     @FXML
     private Label buildStatusLabel;
 
+    //Content
     @FXML
     private ChoiceBox<DirChoiceWrapper> writeContentTypeChoiceBox;
     @FXML
@@ -50,18 +51,23 @@ public class HugoPane extends Accordion {
     @FXML
     private TextField contentTypeTextField;
 
+    //Main LOGIC
+    private String hugoBlogRootDirPath, hugoBlogOutputDirPath, hugoBlogContentDirPath, hugoBlogThemesDirPath;
+    private String hugoSiteConfigFilePath;
+
+    private boolean liveServerRunning = false;
+    private Hugo hugoServer;
+
+    private TabbedHMDPostEditor tabbedHMDPostEditor;
+
+    @FXML
+    private TitledPane blogTitledPane, prefTitledPane, contentTitledPane;
 
     public HugoPane() {
         super();
         bindFxml();
 
         setupGui();
-    }
-
-    public static String toPrettyURL(String string) {
-        return Normalizer.normalize(string.toLowerCase().trim(), Normalizer.Form.NFD)
-                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
-                .replaceAll("[^\\p{Alnum}]+", "-");
     }
 
     private void setupGui() {
@@ -90,14 +96,19 @@ public class HugoPane extends Accordion {
     }
 
     public void setup(String hugoSiteDirPath, TabbedHMDPostEditor tabbedHMDPostEditor) {
-        setHugoSiteDirPath(hugoSiteDirPath);
+        setHugoSitePaths(hugoSiteDirPath);
 
         this.tabbedHMDPostEditor = tabbedHMDPostEditor;
     }
 
-    public void setHugoSiteDirPath(String hugoSiteDirPath) {
-        this.hugoSiteDirPath = hugoSiteDirPath;
-        this.hugoSiteContentPath = hugoSiteDirPath + File.separator + "content";
+    public void setHugoSitePaths(String hugoSiteDirPath) {
+        this.hugoBlogRootDirPath = hugoSiteDirPath;
+        this.hugoBlogContentDirPath = hugoSiteDirPath + File.separator + "content";
+        this.hugoBlogThemesDirPath = hugoSiteDirPath + File.separator + "themes";
+
+        this.hugoSiteConfigFilePath = hugoSiteDirPath + File.separator + "config.toml";
+
+        setupConfBlog();
         buildContentTypesList();
     }
 
@@ -116,6 +127,25 @@ public class HugoPane extends Accordion {
                 }
             }
         });
+
+        this.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                stopLiveBlogServer();
+            }
+        });
+    }
+
+    private void restartLiveBlogServerIfRunning() {
+        if (liveServerRunning) {
+            onLiveBlogServerToggle();
+            TimedUpdaterUtil.callAfter(new CallbackVisitor() {
+                @Override
+                public void call() {
+                    onLiveBlogServerToggle();
+                }
+            });
+        }
     }
 
     private void updateBlogServerToggleButton() {
@@ -138,7 +168,7 @@ public class HugoPane extends Accordion {
 
     private void toggleLiveBlogServer() {
         if (!liveServerRunning) {
-            hugoServer = new Hugo(hugoSiteDirPath);
+            hugoServer = new Hugo(hugoBlogRootDirPath);
 
             hugoServer.startHugoServer(new CallbackVisitor() {
                 @Override
@@ -167,7 +197,7 @@ public class HugoPane extends Accordion {
     private void onBuildBlog() {
         buildBlogButton.setDisable(true);
         buildStatusLabel.setText("Build Status: Building...");
-        Hugo hugoBuilder = new Hugo(hugoSiteDirPath);
+        Hugo hugoBuilder = new Hugo(hugoBlogRootDirPath);
 
         hugoBuilder.runHugoBuild(new CallbackVisitor() {
             @Override
@@ -179,11 +209,19 @@ public class HugoPane extends Accordion {
     }
 
     private void buildContentTypesList() {
-        File[] dirList = new File(hugoSiteContentPath).listFiles(File::isDirectory);
+
+        writeContentTypeChoiceBox.getItems().clear();
+        writeContentTypeChoiceBox.getItems().addAll(getDirChoiceWrapperList(hugoBlogContentDirPath));
+        writeContentTypeChoiceBox.getSelectionModel().selectFirst();
+    }
+
+    public List<DirChoiceWrapper> getDirChoiceWrapperList(String dirContainerPath) {
+
+        File[] dirList = new File(dirContainerPath).listFiles(File::isDirectory);
 
         List<DirChoiceWrapper> wrappedDirList = new ArrayList<DirChoiceWrapper>();
 
-        assert dirList != null;
+        if (dirList == null) throw new AssertionError();
 
         Arrays.sort(dirList, new Comparator<File>() {
             public int compare(File f1, File f2) {
@@ -194,49 +232,39 @@ public class HugoPane extends Accordion {
         for (File f : dirList) {
             wrappedDirList.add(new DirChoiceWrapper(f));
         }
-        writeContentTypeChoiceBox.getItems().clear();
-        writeContentTypeChoiceBox.getItems().addAll(wrappedDirList);
-        writeContentTypeChoiceBox.getSelectionModel().selectFirst();
+
+        return wrappedDirList;
     }
 
     @FXML
     private void onWriteButton() {
         String selectedDir = writeContentTypeChoiceBox.getValue().getDirPath();
 
-        TakeTwoInputsDialog createPostDialog = new TakeTwoInputsDialog("Create New Post", "Just enter a title to proceed");
-
-        createPostDialog.setupDialog("Title", "Enter a title here", "Description", "Enter a Description here");
-
-        if (createPostDialog.showDialog()) {
-            String genFilename = toPrettyURL(createPostDialog.getFirstInput()) + ".md";
-            String genFilePath = selectedDir + File.separator + genFilename;
-
-            HMDFileCreator newPost = new HMDFileCreator(genFilePath);
-            newPost.setupAndMakeFile(createPostDialog.getFirstInput(), createPostDialog.getSecondInput(), "");
-
-            tabbedHMDPostEditor.addTab(new HMDFileProcessor(genFilePath));
-        }
+        TabbedHMDPostEditor.createNewPostAndOpen(tabbedHMDPostEditor, selectedDir);
     }
 
     @FXML
     private void onCreateType() {
-        String dirPath = hugoSiteContentPath + File.separator + toPrettyURL(contentTypeTextField.getText());
+        String dirPath = hugoBlogContentDirPath + File.separator + TabbedHMDPostEditor.toPrettyURL(contentTypeTextField.getText());
 
         String oldText = createContentTypeButton.getText();
         if (FileHandler.makeDir(dirPath)) {
             contentHasChanged();
 
-            createContentTypeButton.setText("Done!");
+            TimedUpdaterUtil.temporaryLabeledUpdate(createContentTypeButton, "Done!");
         } else {
-            createContentTypeButton.setText("Failed!");
+            TimedUpdaterUtil.temporaryLabeledUpdate(createContentTypeButton, "Failed!");
         }
+    }
 
-        TimedUpdaterUtil.callAfter(new CallbackVisitor() {
-            @Override
-            public void call() {
-                createContentTypeButton.setText(oldText);
-            }
-        });
+    @FXML
+    private void onOpenAdvancedConfig() {
+        Stage tomlConfigEditorStage = new Stage();
+
+        tomlConfigEditorStage.setTitle("Site Preference Editor (TOML)");
+        tomlConfigEditorStage.setScene(new Scene(new TomlConfigEditor(hugoSiteConfigFilePath)));
+
+        tomlConfigEditorStage.showAndWait();
     }
 
     public void contentHasChanged() {
@@ -244,10 +272,80 @@ public class HugoPane extends Accordion {
         buildContentTypesList();
     }
 
-    public void onPreferenceEditor() {
+    private void setupConfBlog() {
+        TomlConfig tomlConfig = new TomlConfig(hugoSiteConfigFilePath);
+
+        confBlogTitleField.setText(tomlConfig.getTomlMap().get("Title").toString());
+
+        setupConfBlogThemeVBox(tomlConfig);
+
+
+        Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("Params");
+
+        String paramAuthor = (String) paramsMap.get("Author");
+        String paramDisqus = (String) paramsMap.get("Disqus");
+
+        confBlogAuthorField.setText(paramAuthor);
+        confBlogDisqusField.setText(paramDisqus);
 
     }
 
+    private void setupConfBlogThemeVBox(TomlConfig tomlConfig) {
+        confBlogThemeVBox.getItems().clear();
+
+        List<DirChoiceWrapper> dirChoiceWrapperList = getDirChoiceWrapperList(hugoBlogThemesDirPath);
+
+        confBlogThemeVBox.getItems().addAll(dirChoiceWrapperList);
+
+        //Select Current Theme
+        String currentlySelectedTheme = tomlConfig.getTomlMap().get("theme").toString();
+
+        int currentThemesIndex = dirChoiceWrapperList.indexOf(
+                new DirChoiceWrapper(
+                        new File(hugoBlogThemesDirPath + File.separator + currentlySelectedTheme
+                        )
+                )
+        );
+
+        if (currentThemesIndex > -1) {
+            confBlogThemeVBox.getSelectionModel().select(currentThemesIndex);
+        } else {
+            ExceptionAlerter.showException(new Exception("Config file has theme that is not in theme directory."));
+        }
+    }
+
+    @FXML
+    private void onConfBlogPrefButton() {
+
+        String userBlogTitle = confBlogTitleField.getText();
+        String userBlogTheme = confBlogThemeVBox.getValue().getName();
+
+        String userBlogParamAuthor = confBlogAuthorField.getText();
+        String userBlogParamDisqus = confBlogDisqusField.getText();
+
+        TomlConfig tomlConfig = new TomlConfig(hugoSiteConfigFilePath);
+
+        Map<String, Object> mainTomlConfigMap = tomlConfig.getTomlMap();
+
+        mainTomlConfigMap.put("Title", userBlogTitle);
+        mainTomlConfigMap.put("theme", userBlogTheme);
+
+        Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("Params");
+
+        paramsMap.put("Author", userBlogParamAuthor);
+        paramsMap.put("Disqus", userBlogParamDisqus);
+
+        mainTomlConfigMap.put("Params", paramsMap);
+
+        tomlConfig.setTomlMap(mainTomlConfigMap);
+
+        restartLiveBlogServerIfRunning();
+        tomlConfig.writeTomlMap();
+
+        TimedUpdaterUtil.temporaryLabeledUpdate(confBlogPrefSaveButton, "Saved.");
+    }
+
+    //For wrapping directory chosen
     private class DirChoiceWrapper {
         private File dir;
 
@@ -266,6 +364,18 @@ public class HugoPane extends Accordion {
 
         public String getDirPath() {
             return this.dir.getPath();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof DirChoiceWrapper) {
+                return this.getDir().equals(((DirChoiceWrapper) obj).getDir());
+            }
+            return super.equals(obj);
+        }
+
+        public String getName() {
+            return this.dir.getName();
         }
     }
 

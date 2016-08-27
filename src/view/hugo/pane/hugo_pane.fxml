@@ -4,11 +4,13 @@
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
          minWidth="-Infinity" prefHeight="500.0" prefWidth="292.0" type="javafx.scene.control.Accordion"
-         xmlns="http://javafx.com/javafx/8.0.102-ea">
+         xmlns="http://javafx.com/javafx/8.0.65">
     <panes>
-        <TitledPane fx:id="blogTitledPane" animated="false" text="Blog (Live Preview, Publish)">
+        <TitledPane fx:id="blogTitledPane" animated="false" styleClass="bg-theme-dark"
+                    text="Blog (Live Preview, Publish)">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
+                            styleClass="bg-theme-dark">
                     <children>
                         <VBox alignment="CENTER" prefHeight="421.0" prefWidth="290.0" spacing="10"
                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -30,41 +32,43 @@
         </TitledPane>
         <TitledPane fx:id="PrefTitledPane" animated="false" text="Preferences (Just How You Like It)">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
+                            styleClass="bg-theme-dark">
                     <children>
                         <VBox alignment="CENTER" prefHeight="421.0" prefWidth="290.0" spacing="10"
                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                               AnchorPane.topAnchor="0.0">
                             <children>
-                                <FlowPane prefHeight="36.0" prefWidth="270.0">
+                                <FlowPane prefHeight="47.0" prefWidth="270.0">
                                     <children>
                                         <Label prefHeight="34.0" prefWidth="86.0" text="Blog Title:"/>
-                                        <TextField prefHeight="26.0" prefWidth="184.0"/>
+                                        <TextField fx:id="confBlogTitleField" prefHeight="26.0" prefWidth="184.0"/>
+                                    </children>
+                                </FlowPane>
+                                <FlowPane prefHeight="56.0" prefWidth="270.0">
+                                    <children>
+                                        <Label prefHeight="34.0" prefWidth="86.0" text="Theme:"/>
+                                        <ChoiceBox fx:id="confBlogThemeVBox" prefHeight="26.0" prefWidth="183.0"/>
                                     </children>
                                 </FlowPane>
                                 <FlowPane prefHeight="36.0" prefWidth="270.0">
                                     <children>
                                         <Label prefHeight="34.0" prefWidth="86.0" text="Author:"/>
-                                        <TextField prefHeight="26.0" prefWidth="184.0"/>
-                                    </children>
-                                </FlowPane>
-                                <FlowPane prefHeight="36.0" prefWidth="270.0">
-                                    <children>
-                                        <Label prefHeight="34.0" prefWidth="86.0" text="Theme: "/>
-                                        <ChoiceBox prefHeight="26.0" prefWidth="183.0"/>
+                                        <TextField fx:id="confBlogAuthorField" prefHeight="26.0" prefWidth="184.0"/>
                                     </children>
                                 </FlowPane>
                                 <FlowPane prefHeight="36.0" prefWidth="270.0">
                                     <children>
                                         <Label prefHeight="34.0" prefWidth="86.0" text="disqus"/>
-                                        <TextField prefHeight="26.0" prefWidth="181.0"/>
+                                        <TextField fx:id="confBlogDisqusField" prefHeight="26.0" prefWidth="181.0"/>
                                     </children>
                                 </FlowPane>
                                 <AnchorPane prefHeight="40.0" prefWidth="270.0">
                                     <children>
-                                        <Button layoutX="220.0" layoutY="7.0" mnemonicParsing="false" text="Save"/>
+                                        <Button fx:id="confBlogPrefSaveButton" layoutX="220.0" layoutY="7.0"
+                                                mnemonicParsing="false" onAction="#onConfBlogPrefButton" text="Save"/>
                                         <Button layoutX="7.0" layoutY="7.0" mnemonicParsing="false"
-                                                text="Open Advanced Config"/>
+                                                onAction="#onOpenAdvancedConfig" text="Open Advanced Config"/>
                                     </children>
                                 </AnchorPane>
                             </children>
@@ -75,7 +79,8 @@
         </TitledPane>
         <TitledPane fx:id="contentTitledPane" animated="false" text="Content (Write and Create)">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
+                            styleClass="bg-theme-dark">
                     <children>
                         <VBox alignment="CENTER" prefHeight="421.0" prefWidth="290.0" spacing="10"
                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

@@ -1,26 +1,28 @@
-BaseURL = "/"
-LanguageCode = "en-us"
+canonifyurls = "true"
+copyright = "&copy; 2016 Sohan Chowdhury, all rights reserved."
 SectionPagesMenu = "main"
 Title = "Sohan's Blog"
-canonifyurls = true
-copyright = "&copy; 2016 Sohan Chowdhury, all rights reserved."
+paginate = "10"
+LanguageCode = "en-us"
 disqusShortname = "sohansblog"
-paginate = 10
-pluralizeListTitles = false
-cat = ["dog as","as dsa","asd ds"]
+cat = ["hatezDogz aaaaas", "as dsa", "asd ds"]
+pluralizeListTitles = "false"
 theme = "sohan-light-cards"
-dog = ["1","2","3"]
-[Params]
-Author = "Sohan Chowdhury"
-Birth = "Mon, Jul 8, 1996"
-DateForm = "Mon, Jan 2, 2006"
-Disqus = "sohansblog"
-Facebook = "http://facebook.com/sifat3d"
-Github = "http://github.com/SohanChy"
-GoogleAnalyticsUserID = "UA-73459303-1"
-ShowRelatedPost = true
-ShowTagCloud = true
-SyntaxHighlightTheme = "default.min.css"
-Twitter = "http://twitter.com/iamsohan"
+BaseURL = "/"
+dog = ["1", "2", "3"]
+
 [Taxonomies]
 tags = "tags"
+
+[Params]
+SyntaxHighlightTheme = "default.min.css"
+Github = "http://github.com/SohanChy"
+Disqus = "sohansblog"
+ShowTagCloud = "true"
+Author = "Sohan Chowdhury"
+Twitter = "http://twitter.com/iamsohan"
+Birth = "Mon, Jul 8, 1996"
+DateForm = "Mon, Jan 2, 2006"
+Facebook = "http://facebook.com/sifat3d"
+ShowRelatedPost = "true"
+GoogleAnalyticsUserID = "UA-73459303-1"

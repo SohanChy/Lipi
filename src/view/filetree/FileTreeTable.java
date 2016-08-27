@@ -11,15 +11,18 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import model.hugo.HMDFileProcessor;
 import model.toml.TomlString;
+import model.utility.MarkdownFileUtils;
 import view.hugo.hmd.TabbedHMDPostEditor;
 import view.utils.ExceptionAlerter;
 
@@ -29,29 +32,33 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Optional;
 
 
 public class FileTreeTable extends AnchorPane {
 
     private final static NumberFormat NumberFormater = NumberFormat.getIntegerInstance();
-    private final static DateFormat DateFormater = DateFormat.getDateTimeInstance();
-    String dirPath;
-    private TreeTableView<File> treeTableView;
+    private final static DateFormat DateFormatter = DateFormat.getDateTimeInstance();
+    private final ContextMenu rightClickContextMenu;
+    private String hugoBlogRootDirPath, hugoBlogContentDirPath;
     private TabbedHMDPostEditor tabbedHMDPostEditor;
-
     //FXML
+    @FXML
+    private TreeTableView<File> treeTableView;
     @FXML
     private TreeTableColumn nameCol, titleCol, lastModCol;
 
     public FileTreeTable() {
         super();
         bindFxml();
+        rightClickContextMenu = new ContextMenu();
+        buildContextMenu();
     }
 
 
-    public FileTreeTable(String dirPath, TabbedHMDPostEditor tabbedHMDPostEditor) {
+    public FileTreeTable(String hugoBlogRootDirPath, TabbedHMDPostEditor tabbedHMDPostEditor) {
         this();
-        setup(dirPath, tabbedHMDPostEditor);
+        setup(hugoBlogRootDirPath, tabbedHMDPostEditor);
     }
 
     private void bindFxml() {
@@ -66,16 +73,21 @@ public class FileTreeTable extends AnchorPane {
             ExceptionAlerter.showException(e);
             throw new RuntimeException(e);
         }
+
+        this.getStyleClass().add("file-tree-table");
     }
 
-    public void setup(String dirPath, TabbedHMDPostEditor tabbedHMDPostEditor) {
-        this.dirPath = dirPath;
+    public void setup(String hugoBlogRootDirPath, TabbedHMDPostEditor tabbedHMDPostEditor) {
+
+//        buildRightClickContextMenu();
+
+        this.hugoBlogRootDirPath = hugoBlogRootDirPath;
+        this.hugoBlogContentDirPath = this.hugoBlogRootDirPath + File.separator + "content";
         this.tabbedHMDPostEditor = tabbedHMDPostEditor;
         prepare();
     }
 
     private void prepare() {
-        treeTableView = new TreeTableView<>();
         buildFileBrowserTreeTableView(treeTableView);
 
         final PseudoClass firstRowClass = PseudoClass.getPseudoClass("first-row");
@@ -84,47 +96,78 @@ public class FileTreeTable extends AnchorPane {
             TreeTableRow<File> row = new TreeTableRow<File>();
             row.treeItemProperty().addListener((ov, oldTreeItem, newTreeItem) ->
                     row.pseudoClassStateChanged(firstRowClass, newTreeItem == treeTable.getRoot()));
+            row.setContextMenu(rightClickContextMenu);
             return row;
         });
 
-        treeTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        treeTableView.setOnMouseClicked(
+                new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount() == 2) {
-                    TreeItem<File> file = treeTableView.getSelectionModel().getSelectedItem();
-
-                    if (!file.getValue().isDirectory()) {
-                        try {
-                            openHMdPostEditor(file.getValue().getCanonicalPath());
-                        } catch (IOException e) {
-                            ExceptionAlerter.showException(e);
-                        }
-                    }
+                    openSelectedTreeitemInHmdEditor();
                 }
+
             }
         });
 
+//        this.getChildren().add(treeTableView);
+    }
 
-        this.getChildren().add(treeTableView);
+    private void openSelectedTreeitemInHmdEditor() {
+        TreeItem<File> file = treeTableView.getSelectionModel().getSelectedItem();
+
+        if (file != null) {
+            if (!file.getValue().isDirectory() && file.getValue().getName().endsWith(".md")) {
+                try {
+                    System.out.println(file.getValue());
+                    openHMdPostEditor(file.getValue().getCanonicalPath());
+                } catch (IOException e) {
+                    ExceptionAlerter.showException(e);
+                }
+            }
+        }
     }
 
 
     private void buildFileBrowserTreeTableView(TreeTableView<File> treeTableView) {
-        TreeItem<File> root = createNode(new File(dirPath));
+        TreeItem<File> root = createNode(new File(hugoBlogContentDirPath));
         root.setExpanded(true);
 
         treeTableView.setRoot(root);
 
-        // --- name column
         nameCol.setCellValueFactory(
                 new Callback<TreeTableColumn.CellDataFeatures<File, String>, ObservableValue<String>>() {
                     @Override
                     public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<File, String> p) {
                         File f = p.getValue().getValue();
-                        String text = f.getParentFile() == null ? "/" : f.getName();
+                        String text = (f.getParentFile() == null) ? "/" : f.getName();
                         return new ReadOnlyObjectWrapper<String>(text);
                     }
                 });
+
+        nameCol.setCellFactory(new Callback<TreeTableColumn<File, String>, TreeTableCell<File, String>>() {
+            @Override
+            public TreeTableCell<File, String> call(TreeTableColumn<File, String> param) {
+                return new TreeTableCell<File, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+
+             /*           if(getFileExtension(item).equals("md")){
+                            setContextMenu(rightClickContextMenu);
+                        }*/
+
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(item);
+                        }
+                    }
+                };
+            }
+
+        });
 
         titleCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<File, File>, ObservableValue<File>>() {
             @Override
@@ -136,15 +179,6 @@ public class FileTreeTable extends AnchorPane {
             @Override
             public TreeTableCell<File, File> call(final TreeTableColumn<File, File> p) {
                 return new TreeTableCell<File, File>() {
-
-                    private String getFileExtension(File file) {
-                        String name = file.getName();
-                        try {
-                            return name.substring(name.lastIndexOf(".") + 1);
-                        } catch (Exception e) {
-                            return "";
-                        }
-                    }
 
                     @Override
                     protected void updateItem(File item, boolean empty) {
@@ -160,6 +194,8 @@ public class FileTreeTable extends AnchorPane {
                             try {
                                 HMDFileProcessor hmd = new HMDFileProcessor(item.getCanonicalPath());
                                 hmd.readHMdFile();
+
+//                                setContextMenu(rightClickContextMenu);
 
                                 if (hmd.isValidMd()) {
                                     TomlString ts = new TomlString(hmd.getFrontMatter());
@@ -217,17 +253,19 @@ public class FileTreeTable extends AnchorPane {
                         if (item == null || empty) {
                             setText(null);
                         } else {
-                            setText(DateFormater.format(item));
+                            setText(DateFormatter.format(item));
+//                            setContextMenu(rightClickContextMenu);
                         }
                     }
                 };
             }
         });
 
-        treeTableView.getColumns().setAll(nameCol, titleCol, lastModCol);
+//        treeTableView.getColumns().setAll(nameCol, titleCol, lastModCol);
     }
 
     private TreeItem<File> createNode(final File f) {
+
         final TreeItem<File> node = new TreeItem<File>(f) {
             private boolean isLeaf;
             private boolean isFirstTimeChildren = true;
@@ -260,12 +298,15 @@ public class FileTreeTable extends AnchorPane {
     private ObservableList<TreeItem<File>> buildChildren(TreeItem<File> TreeItem) {
         File f = TreeItem.getValue();
         if (f != null && f.isDirectory()) {
-            File[] files = f.listFiles();
+
+            File[] files = f.listFiles(MarkdownFileUtils.getMdFileFilter());
             if (files != null) {
                 ObservableList<TreeItem<File>> children = FXCollections.observableArrayList();
 
                 for (File childFile : files) {
-                    children.add(createNode(childFile));
+                    javafx.scene.control.TreeItem<File> node = createNode(childFile);
+                    node.setExpanded(true);
+                    children.add(node);
                 }
 
                 return children;
@@ -281,6 +322,88 @@ public class FileTreeTable extends AnchorPane {
         HMDFileProcessor selectedMdFile = new HMDFileProcessor(file);
         tabbedHMDPostEditor.addTab(selectedMdFile);
 
+    }
+
+    private String getFileExtension(File file) {
+        String fileName = file.getName();
+        return getFileExtension(fileName);
+    }
+
+    private String getFileExtension(String fileName) {
+        try {
+            return fileName.substring(fileName.lastIndexOf(".") + 1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    private void buildContextMenu() {
+
+        MenuItem edit = new MenuItem("Edit");
+        edit.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                openSelectedTreeitemInHmdEditor();
+            }
+        });
+
+        MenuItem delete = new MenuItem("Delete");
+        delete.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                File file = treeTableView.getSelectionModel().getSelectedItem().getValue();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirm Delete");
+                alert.setHeaderText("Are you sure?");
+
+                if (!file.isDirectory()) {
+                    alert.setContentText("Click YES to delete " + file.getName());
+                } else {
+                    alert.setContentText("This is a folder, IT MUST BE EMPTY TO DELETE!!! :" + file.getName());
+                }
+
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+
+                    String msg;
+                    if (file.delete()) {
+                        msg = "Deleted Successfully";
+                    } else {
+                        msg = "Delete FAILED!";
+                    }
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(msg);
+                    alert.setHeaderText(null);
+                    alert.setContentText("You tried to delete " + file.getName() + ".\n"
+                            + msg
+                    );
+
+                    alert.showAndWait();
+
+                    buildFileBrowserTreeTableView(treeTableView);
+                }
+            }
+        });
+        rightClickContextMenu.getItems().addAll(edit, delete);
+
+        rightClickContextMenu.setOnShowing(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent e) {
+                File file = treeTableView.getSelectionModel().getSelectedItem().getValue();
+
+                if (file.isDirectory()) {
+                    edit.setText("New Post");
+                    edit.setOnAction(new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent e) {
+                            File file = treeTableView.getSelectionModel().getSelectedItem().getValue();
+
+                            TabbedHMDPostEditor.createNewPostAndOpen(tabbedHMDPostEditor, file);
+                            buildFileBrowserTreeTableView(treeTableView);
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
 

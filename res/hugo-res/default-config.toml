@@ -1,0 +1,17 @@
+canonifyurls = "true"
+SectionPagesMenu = "main"
+paginate = "10"
+Title = "Hello Lipi"
+LanguageCode = "en-us"
+pluralizeListTitles = "false"
+theme = "sohan-light-cards"
+BaseURL = "/"
+
+[Taxonomies]
+tags = "tags"
+
+[Params]
+SyntaxHighlightTheme = "default.min.css"
+ShowTagCloud = "true"
+Author = "Sohan Chowdhury"
+ShowRelatedPost = "true"

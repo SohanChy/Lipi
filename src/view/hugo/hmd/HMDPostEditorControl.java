@@ -9,7 +9,6 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.hugo.HMDFileProcessor;
-import model.utility.CallbackVisitor;
 import view.hugo.markdown.MarkdownEditorControl;
 import view.toml.TomlEditorControl;
 import view.utils.ExceptionAlerter;
@@ -89,14 +88,14 @@ public class HMDPostEditorControl extends AnchorPane {
     @FXML
     private void onSaveButton(ActionEvent event) {
         this.save();
-        showUpdateInLabel("Saved.");
+        TimedUpdaterUtil.temporaryLabeledUpdate(statusLabel, "Saved.");
         this.load();
     }
 
     @FXML
     private void onReloadButton(ActionEvent event) {
         this.load();
-        showUpdateInLabel("Reloaded.", 2000, statusLabel);
+        TimedUpdaterUtil.temporaryLabeledUpdate(statusLabel, "Reloaded.");
     }
 
     @FXML
@@ -106,25 +105,6 @@ public class HMDPostEditorControl extends AnchorPane {
         stage.hide();
     }
 
-    //For this control, temporary status update
-    private void showUpdateInLabel(String update) {
-        showUpdateInLabel(update, 2000, statusLabel);
-    }
-
-    //Show temporary status update
-    private void showUpdateInLabel(String update, int mseconds, Label status) {
-
-        String oldMsg = status.getText();
-        status.setText(update);
-
-        TimedUpdaterUtil.callAfter(mseconds, new CallbackVisitor() {
-            @Override
-            public void call() {
-                status.setText(oldMsg);
-            }
-        });
-
-    }
 
     private void save() {
         this.hMdFile.setFrontMatter(tomlEditorControl.getTomlString());

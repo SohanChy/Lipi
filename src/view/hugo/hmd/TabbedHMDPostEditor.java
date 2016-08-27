@@ -4,10 +4,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
+import model.hugo.HMDFileCreator;
 import model.hugo.HMDFileProcessor;
 import view.utils.ExceptionAlerter;
+import view.utils.TakeTwoInputsDialog;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
 
 /**
  * Created by Sohan Chowdhury on 8/26/16.
@@ -21,6 +25,40 @@ public class TabbedHMDPostEditor extends TabPane {
     public TabbedHMDPostEditor(Stage editorStage) {
         bindFxml();
         this.editorStage = editorStage;
+    }
+
+    //Utils
+    public static void createNewPostAndOpen(TabbedHMDPostEditor tabbedHMDPostEditor, String targetDir) {
+
+        TakeTwoInputsDialog createPostDialog = new TakeTwoInputsDialog("Create New Post", "Just enter a title to proceed");
+
+        createPostDialog.setupDialog("Title", "Enter a title here", "Description", "Enter a Description here");
+
+        if (createPostDialog.showDialog()) {
+            String genFilename = toPrettyURL(createPostDialog.getFirstInput()) + ".md";
+            String genFilePath = targetDir + File.separator + genFilename;
+
+            HMDFileCreator newPost = new HMDFileCreator(genFilePath);
+            newPost.setupAndMakeFile(createPostDialog.getFirstInput(), createPostDialog.getSecondInput(), "");
+
+            tabbedHMDPostEditor.addTab(new HMDFileProcessor(genFilePath));
+        }
+    }
+
+    public static void createNewPostAndOpen(TabbedHMDPostEditor tabbedHMDPostEditor, File target) {
+        try {
+            String targetDir = target.getCanonicalPath();
+
+            createNewPostAndOpen(tabbedHMDPostEditor, targetDir);
+        } catch (IOException e) {
+            ExceptionAlerter.showException(e);
+        }
+    }
+
+    public static String toPrettyURL(String string) {
+        return Normalizer.normalize(string.toLowerCase().trim(), Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .replaceAll("[^\\p{Alnum}]+", "-");
     }
 
     private void bindFxml() {

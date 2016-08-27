@@ -1,3 +1,9 @@
+//Customize Material.css BASE COLOR
+.root {
+    -fx-basic-color: #00352C !important;
+    -fx-control-inner-background: #f0f0f0 !important;
+}
+
 .split-pane:horizontal > .split-pane-divider {
    -fx-background-color: transparent;
 }
@@ -6,8 +12,20 @@
 }
 
 .split-pane, .anchor-pane, .tool-bar, .html-editor, .scroll-pane, .v-box, .h-box, .tab-pane, .tab-header-background, .toml-entry  {
-    -fx-background-color: #455A64;
+    -fx-background-color: #607D8B;
     -fx-padding: 0 0 0 0;
+}
+
+.bg-theme-dark {
+    -fx-background-color: #607D8B !important;
+}
+
+.bg-theme-dark .label  {
+    -fx-text-fill: #F5F5F5;
+}
+
+.bg-theme-dark .choice-box .label  {
+    -fx-text-fill: -fx-text-color;
 }
 
 
@@ -32,16 +50,13 @@
     -fx-text-fill: #F5F5F5;
 }
 
-.hyperlink : disabled {
-    -fx-text-fill: red;
-}
-
-//Customize Material.css
-.root {
-    -fx-basic-color: #00352C !important;
-    -fx-control-inner-background: #f0f0f0 !important;
-}
-
 .scroll-bar .track {
     -fx-background-color: -fx-lighter-color !important;
+}
+
+//TOML Editor
+.save-button-vbox .button {
+        -fx-padding: 10 60 10 60;
+            -fx-border-insets: 5;
+            -fx-background-insets: 5;
 }

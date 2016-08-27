@@ -8,6 +8,7 @@ import model.utility.FileHandler;
 import model.utility.Ipc;
 import model.utility.Pandoc;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,12 @@ class RunTests {
 
         inp = testsFolder + "/tomlConfigTest.toml";
 
-        System.out.println(TomlUtils.toToml(TomlUtils.readToml(FileHandler.readFile(inp))));
+        try {
+            System.out.println(TomlUtils.toToml(TomlUtils.readToml(FileHandler.readFile(inp))));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private static void testHugo() {
@@ -95,7 +101,12 @@ class RunTests {
         Pandoc PandocParser = new Pandoc();
 
         //System.out.println( PandocParser.htmlToMd( FileHandler.readFile("test.html") ) );
-        System.out.println(PandocParser.htmlToMd(FileHandler.readFile(testsFolder + "/test.html")));
+        try {
+            System.out.println(PandocParser.htmlToMd(FileHandler.readFile(testsFolder + "/test.html")));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 }

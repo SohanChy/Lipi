@@ -12,18 +12,15 @@ public class FileHandler {
         //FULLY STATIC CLASS
     }
 
-    public static String readFile(String path, Charset encoding) {
-        byte[] encoded = null;
-        try {
-            encoded = Files.readAllBytes(Paths.get(path));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static String readFile(String path, Charset encoding) throws IOException {
+        byte[] encoded;
+        encoded = Files.readAllBytes(Paths.get(path));
+
         assert encoded != null;
         return new String(encoded, encoding);
     }
 
-    public static String readFile(String path) {
+    public static String readFile(String path) throws IOException {
 
         return readFile(path, StandardCharsets.UTF_8);
     }

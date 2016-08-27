@@ -13,18 +13,22 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.hugo.HMDFileProcessor;
 import model.utility.FileHandler;
+import view.dashboard.DashboardMain;
 import view.filetree.FileTreeTable;
 import view.hugo.hmd.HMDPostEditorControl;
 import view.hugo.hmd.TabbedHMDPostEditor;
 import view.hugo.markdown.MarkdownEditorControl;
 import view.hugo.pane.HostServicesProviderUtil;
 import view.hugo.pane.HugoPane;
+import view.toml.TomlConfigEditor;
 import view.toml.TomlEditorControl;
+import view.utils.ExceptionAlerter;
+import view.wizard.WelcomeWizard;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 
 public class RunTestsJavaFX extends Application {
@@ -49,7 +53,8 @@ public class RunTestsJavaFX extends Application {
 
         primaryStage.setTitle("Main Application");
         editorStage.setTitle("Hugo Markdown Editor");
-
+        //Must do this for opening browser;
+        HostServicesProviderUtil.INSTANCE.init(getHostServices());
 
         pane = new VBox();
 
@@ -81,7 +86,11 @@ public class RunTestsJavaFX extends Application {
 //      testFileTreeControl();
 //        testHugoPane();
 //      testTabbedHMdPostEditor();
+//        testTomlConfigEditor();
 
+//        testDashboardMain();
+
+        wizard();
 
         primaryStage.show();
     }
@@ -96,25 +105,34 @@ public class RunTestsJavaFX extends Application {
 
 //        TomlParser tomlParser = new TomlString(mdObject.getFrontMatter());
 
-        TomlEditorControl tomlEditor = new TomlEditorControl(FileHandler.readFile(inp));
+        String tomlString;
+        try {
+            tomlString = FileHandler.readFile(inp);
 
-        Button print = new Button("print");
-        print.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                mdObject.setFrontMatter(tomlEditor.getTomlString());
-                System.out.println(mdObject.getFrontMatter());
-            }
-        });
 
-        tomlEditor.getChildren().add(print);
+            TomlEditorControl tomlEditor = new TomlEditorControl(tomlString);
 
-        ScrollPane sp = new ScrollPane(tomlEditor);
-        sp.setFitToHeight(true);
+            Button print = new Button("print");
+            print.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    mdObject.setFrontMatter(tomlEditor.getTomlString());
+                    System.out.println(mdObject.getFrontMatter());
+                }
+            });
 
-        pane.getChildren().add(sp);
+            tomlEditor.getChildren().add(print);
 
-        primaryStage.setTitle("Toml Editor");
+            ScrollPane sp = new ScrollPane(tomlEditor);
+            sp.setFitToHeight(true);
+
+            pane.getChildren().add(sp);
+
+            primaryStage.setTitle("Toml Editor");
+
+        } catch (IOException e) {
+            ExceptionAlerter.showException(e);
+        }
     }
 
     public void testMdEditor() {
@@ -148,7 +166,7 @@ public class RunTestsJavaFX extends Application {
 
         primaryStage.setTitle("FileTreeControl");
 
-        FileTreeTable ft = new FileTreeTable((testsBlog + File.separator + "content"), tabbedHMDPostEditor);
+        FileTreeTable ft = new FileTreeTable(testsBlog, tabbedHMDPostEditor);
 
         Text txt = new Text("TEst teST স্ট্য্যাকওভারফ্লোর প্রোগ্রামিং");
 
@@ -164,16 +182,6 @@ public class RunTestsJavaFX extends Application {
         HugoPane hp = new HugoPane();
         hp.setup(testsBlog, tabbedHMDPostEditor);
 
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                hp.stopLiveBlogServer();
-            }
-        });
-
-        //Must do this for opening browser;
-        HostServicesProviderUtil.INSTANCE.init(getHostServices());
-
         pane.getChildren().addAll(hp);
 
 //        ft.setFitToHeight(true);
@@ -182,6 +190,39 @@ public class RunTestsJavaFX extends Application {
     public void testTabbedHMdPostEditor() {
         HMDFileProcessor mdObject = new HMDFileProcessor(testsFolder + "/test.md");
         tabbedHMDPostEditor.addTab(mdObject);
+
+    }
+
+
+    public void testTomlConfigEditor() {
+        inp = testsFolder + "/tomlConfigTest.toml";
+
+        TomlConfigEditor tomlEditor = new TomlConfigEditor(inp);
+        pane.getChildren().add(tomlEditor);
+
+
+    }
+
+    public void testDashboardMain() {
+
+        primaryStage.setTitle("Blog Dashboard - Lipi");
+
+        String blogFolder = "/media/sohan/Mediabox/Downloads/blog/";
+
+        DashboardMain mainDashboard = new DashboardMain(blogFolder, tabbedHMDPostEditor);
+
+        pane.getChildren().add(mainDashboard);
+
+    }
+
+
+    public void wizard() {
+
+        primaryStage.setTitle("Lipi");
+
+        WelcomeWizard welcome = new WelcomeWizard(primaryStage);
+
+        pane.getChildren().add(welcome);
 
     }
 

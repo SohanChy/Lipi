@@ -3,6 +3,7 @@ package view.utils;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Labeled;
 import model.utility.CallbackVisitor;
 
 /**
@@ -11,10 +12,10 @@ import model.utility.CallbackVisitor;
  * Email: sifat3d@gmail.com
  */
 public class TimedUpdaterUtil {
-    static final int defaultWait = 2000;
+    static final int DEFAULT_WAIT = 2000;
 
     public static void callAfter(CallbackVisitor callback) {
-        callAfter(defaultWait, callback);
+        callAfter(DEFAULT_WAIT, callback);
     }
 
     public static void callAfter(int mseconds, CallbackVisitor callback) {
@@ -36,6 +37,22 @@ public class TimedUpdaterUtil {
             }
         });
         new Thread(sleeper).start();
+    }
+
+    public static void temporaryLabeledUpdate(int mseconds, Labeled labeled, String newText) {
+        String oldText = labeled.getText();
+        labeled.setText(newText);
+
+        callAfter(mseconds, new CallbackVisitor() {
+            @Override
+            public void call() {
+                labeled.setText(oldText);
+            }
+        });
+    }
+
+    public static void temporaryLabeledUpdate(Labeled labeled, String newText) {
+        temporaryLabeledUpdate(DEFAULT_WAIT, labeled, newText);
     }
 
 }
