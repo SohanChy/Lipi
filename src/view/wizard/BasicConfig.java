@@ -2,15 +2,23 @@ package view.wizard;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+import model.hugo.Hugo;
 import model.toml.TomlConfig;
+import org.apache.commons.io.FileUtils;
+import view.dashboard.DashboardMain;
+import view.hugo.hmd.TabbedHMDPostEditor;
 import view.utils.ExceptionAlerter;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -20,8 +28,8 @@ import java.util.*;
  */
 public class BasicConfig extends GridPane {
 
-    public static final String hugoBlogThemesDirPath = Paths.get("res/hugo-res/themes/").toAbsolutePath().toUri().toString();
-    public static final String hugoDefaultConfigFilePath = Paths.get("res/hugo-res/default-config.toml").toAbsolutePath().toUri().toString();
+    public static final String hugoBlogThemesDirPath = "res/hugo-res/themes/";
+    public static final String hugoDefaultConfigFilePath = "res/hugo-res/default-config.toml";
 
 
     @FXML
@@ -29,7 +37,10 @@ public class BasicConfig extends GridPane {
     @FXML
     private ChoiceBox<DirChoiceWrapper> confThemeChoice;
 
-    public BasicConfig() {
+    private Stage primaryStage;
+
+    public BasicConfig(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         bindFxml();
         setupGui();
     }
@@ -56,11 +67,11 @@ public class BasicConfig extends GridPane {
 
     public List<DirChoiceWrapper> getDirChoiceWrapperList(String dirContainerPath) {
 
+
         File[] dirList = (new File(dirContainerPath)).listFiles();
 
         List<DirChoiceWrapper> wrappedDirList = new ArrayList<DirChoiceWrapper>();
 
-        System.out.println(new File(dirContainerPath).getName());
         if (dirList == null) throw new AssertionError();
 
         Arrays.sort(dirList, new Comparator<File>() {
@@ -79,7 +90,6 @@ public class BasicConfig extends GridPane {
     private void setupConfBlogThemeVBox() {
         confThemeChoice.getItems().clear();
 
-
         List<DirChoiceWrapper> dirChoiceWrapperList = getDirChoiceWrapperList(hugoBlogThemesDirPath);
 
         confThemeChoice.getItems().addAll(dirChoiceWrapperList);
@@ -87,42 +97,74 @@ public class BasicConfig extends GridPane {
         confThemeChoice.getSelectionModel().selectFirst();
     }
 
-    private void afterDirIsChosen() {
-
-    }
-
-    private void configuration(String writePath) {
-        String userBlogTitle = confBlogTitleField.getText();
-        String userBlogTheme = confThemeChoice.getValue().getName();
-
-        String userBlogParamAuthor = confBlogAuthorField.getText();
-
-        TomlConfig tomlConfig = new TomlConfig(hugoDefaultConfigFilePath);
-
-        Map<String, Object> mainTomlConfigMap = tomlConfig.getTomlMap();
-
-        mainTomlConfigMap.put("Title", userBlogTitle);
-        mainTomlConfigMap.put("theme", userBlogTheme);
-
-        Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("Params");
-
-        paramsMap.put("Author", userBlogParamAuthor);
-
-        mainTomlConfigMap.put("Params", paramsMap);
-
-        tomlConfig.setTomlMap(mainTomlConfigMap);
-
-        TomlConfig newToml = new TomlConfig(writePath);
-        newToml.setTomlMap(tomlConfig.getTomlMap());
-        newToml.writeTomlMap();
-
-    }
-
     @FXML
     private void onNextButton() {
         String confBlogNameText = confBlogTitleField.getText();
         String confBlogThemeText = confThemeChoice.getValue().getName();
         String confAuthorNameText = confBlogAuthorField.getText();
+
+        DirectoryChooser blogDirChooser = new DirectoryChooser();
+        blogDirChooser.setTitle("Select a folder to create your blog, Or maybe make a new one?");
+
+        File selectedDirectory = blogDirChooser.showDialog(this.getScene().getWindow());
+
+        if (selectedDirectory != null) {
+            try {
+
+                String selectedDirPath = selectedDirectory.getCanonicalPath();
+
+
+                //New site is created in program path!! FIX LATER
+                String newSite = TabbedHMDPostEditor.toPrettyURL(confBlogNameText);
+                new Hugo(selectedDirPath).hugoMakeSite(newSite);
+
+
+                Path tempLoc = FileSystems.getDefault().getPath(newSite);
+
+                System.out.println(tempLoc.toAbsolutePath());
+
+                String newBlogsPath = selectedDirPath + File.separator + newSite;
+                FileUtils.moveDirectory(new File(newSite), new File(newBlogsPath));
+
+                //WRITE CONFIG
+                TomlConfig tomlConfig = new TomlConfig(hugoDefaultConfigFilePath);
+
+                Map<String, Object> mainTomlConfigMap = tomlConfig.getTomlMap();
+
+                mainTomlConfigMap.put("Title", confBlogNameText);
+                mainTomlConfigMap.put("theme", confBlogThemeText);
+
+                Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("Params");
+
+                paramsMap.put("Author", confAuthorNameText);
+
+                mainTomlConfigMap.put("Params", paramsMap);
+
+                tomlConfig.setTomlMap(mainTomlConfigMap);
+
+                TomlConfig newToml = new TomlConfig(newBlogsPath + File.separator + "config.toml");
+                newToml.setTomlMap(tomlConfig.getTomlMap());
+                newToml.writeTomlMap();
+
+
+                FileUtils.copyDirectory(new File(hugoBlogThemesDirPath), new File(newBlogsPath + File.separator + "themes"));
+
+                primaryStage.setTitle("Blog Dashboard - Lipi");
+
+
+                Stage editorStage = new Stage();
+                TabbedHMDPostEditor t = new TabbedHMDPostEditor(editorStage);
+                editorStage.setScene(new Scene(t));
+
+                DashboardMain mainDashboard = new DashboardMain(newBlogsPath, t);
+
+                primaryStage.setScene(new Scene(mainDashboard));
+            } catch (IOException e) {
+                ExceptionAlerter.showException(e);
+                e.getMessage();
+            }
+        }
+
 
     }
 

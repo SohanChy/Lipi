@@ -5,6 +5,7 @@ import model.utility.Ipc;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Hugo {
@@ -33,6 +34,17 @@ public class Hugo {
 
     public void setPubDir(String pubDir) {
         this.pubDir = pubDir;
+    }
+
+    public void hugoMakeSite(String blogName) {
+        params = new ArrayList<String>();
+        params.addAll(Arrays.asList(paramNewSite));
+        params.add(blogName);
+
+        hugoIpc.setProgArgs(params);
+        hugoIpc.runProc();
+        hugoIpc.showOutput();
+
     }
 
     protected void hugoBuild() {

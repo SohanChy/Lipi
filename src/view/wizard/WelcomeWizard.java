@@ -41,6 +41,6 @@ public class WelcomeWizard extends GridPane {
 
     @FXML
     private void onCreateNewBlog() {
-        primaryStage.setScene(new Scene(new BasicConfig()));
+        primaryStage.setScene(new Scene(new BasicConfig(primaryStage)));
     }
 }

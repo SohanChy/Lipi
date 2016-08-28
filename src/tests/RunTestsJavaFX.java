@@ -89,7 +89,7 @@ public class RunTestsJavaFX extends Application {
 //        testTomlConfigEditor();
 
 //        testDashboardMain();
-
+//
         wizard();
 
         primaryStage.show();
