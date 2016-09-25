@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import model.hugo.Hugo;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -151,14 +153,33 @@ public class BasicConfig extends GridPane {
 
                 primaryStage.setTitle("Blog Dashboard - Lipi");
 
-
                 Stage editorStage = new Stage();
                 TabbedHMDPostEditor t = new TabbedHMDPostEditor(editorStage);
                 editorStage.setScene(new Scene(t));
 
+                t.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
+                t.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
+
+
+
+
                 DashboardMain mainDashboard = new DashboardMain(newBlogsPath, t);
 
-                primaryStage.setScene(new Scene(mainDashboard));
+                mainDashboard.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
+                mainDashboard.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
+
+                VBox holder = new VBox();
+                holder.setPrefHeight(680);
+                holder.setPrefWidth(1000);
+                holder.getChildren().add(mainDashboard);
+
+
+                primaryStage.setWidth(1000);
+                primaryStage.setHeight(680);
+
+                primaryStage.setScene(new Scene(holder));
+
+
             } catch (IOException e) {
                 ExceptionAlerter.showException(e);
                 e.getMessage();
