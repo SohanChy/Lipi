@@ -1,11 +1,5 @@
 package view.filetree;
 
-/**
- * Created by Sohan Chowdhury on 8/21/16.
- * Website: sohanchy.com
- * Email: sifat3d@gmail.com
- */
-
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -397,7 +391,7 @@ public class FileTreeTable extends AnchorPane {
                             File file = treeTableView.getSelectionModel().getSelectedItem().getValue();
 
                             TabbedHMDPostEditor.createNewPostAndOpen(tabbedHMDPostEditor, file);
-                            buildFileBrowserTreeTableView(treeTableView);
+                            reloadTree();
                         }
                     });
 
@@ -406,5 +400,8 @@ public class FileTreeTable extends AnchorPane {
         });
     }
 
+    public void reloadTree() {
+        buildFileBrowserTreeTableView(treeTableView);
+    }
 
 }

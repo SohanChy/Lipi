@@ -60,3 +60,7 @@
             -fx-border-insets: 5;
             -fx-background-insets: 5;
 }
+
+.list-cell {
+    -fx-alignment: center;
+}

@@ -2,17 +2,14 @@ package view.wizard;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import model.hugo.Hugo;
 import model.toml.TomlConfig;
 import org.apache.commons.io.FileUtils;
-import view.dashboard.DashboardMain;
 import view.hugo.hmd.TabbedHMDPostEditor;
 import view.utils.ExceptionAlerter;
 
@@ -20,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -115,6 +111,9 @@ public class BasicConfig extends GridPane {
 
                 String selectedDirPath = selectedDirectory.getCanonicalPath();
 
+                //history is saved
+                WelcomeWizard.storeBlogHistory(selectedDirPath);
+
 
                 //New site is created in program path!! FIX LATER
                 String newSite = TabbedHMDPostEditor.toPrettyURL(confBlogNameText);
@@ -151,33 +150,7 @@ public class BasicConfig extends GridPane {
 
                 FileUtils.copyDirectory(new File(hugoBlogThemesDirPath), new File(newBlogsPath + File.separator + "themes"));
 
-                primaryStage.setTitle("Blog Dashboard - Lipi");
-
-                Stage editorStage = new Stage();
-                TabbedHMDPostEditor t = new TabbedHMDPostEditor(editorStage);
-                editorStage.setScene(new Scene(t));
-
-                t.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
-                t.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
-
-
-
-
-                DashboardMain mainDashboard = new DashboardMain(newBlogsPath, t);
-
-                mainDashboard.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
-                mainDashboard.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
-
-                VBox holder = new VBox();
-                holder.setPrefHeight(680);
-                holder.setPrefWidth(1000);
-                holder.getChildren().add(mainDashboard);
-
-
-                primaryStage.setWidth(1000);
-                primaryStage.setHeight(680);
-
-                primaryStage.setScene(new Scene(holder));
+                WelcomeWizard.openDirBlog(new File(newBlogsPath), primaryStage);
 
 
             } catch (IOException e) {
@@ -222,4 +195,5 @@ public class BasicConfig extends GridPane {
             return this.dir.getName();
         }
     }
+
 }

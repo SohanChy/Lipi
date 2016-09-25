@@ -1,0 +1,60 @@
+<aside class="site">
+
+    {{ if and .IsPage (ne .Params.toc false) }}
+    <section>
+        <header>Table Of Contents</header>
+        <div>{{ .TableOfContents }}</div>
+    </section>
+    {{ end }}
+
+    {{ if ne (len .Site.Menus) 0 }}
+    <section>
+        <header>Menu</header>
+        <div>
+            <nav class="p-menu">
+                {{ range .Site.Menus }}
+                <ul>
+                    {{ range . }}
+                    <li>
+                        {{ if .HasChildren }}
+                        <a href="#">{{ .Pre }} {{ .Name }}</a>
+                        <ul>
+                            {{ range .Children }}
+                            <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+                            {{ end }}
+                        </ul>
+                    </li>
+                    {{ else }}
+                    <li><a href="{{ .URL }}">{{ .Pre }} {{ .Name }}</a></li>
+                    {{ end }}
+                    {{end}}
+                </ul>
+                {{end}}
+            </nav>
+        </div>
+    </section>
+    {{ end }}
+
+    <section>
+        <header>LatestPosts</header>
+        <div>
+            {{ range first 10 .Site.Pages }}
+            {{ .Render "li" }}
+            {{ end }}
+        </div>
+    </section>
+
+    {{ range $key, $value := .Site.Taxonomies }}
+    <section>
+        <header>{{ $key | singularize }}</header>
+        <div>
+            <ul>
+                {{ range first 10 $value.ByCount }}
+                <li><a href="{{ $.Site.BaseURL}}{{ $key }}/{{ .Name | urlize }}">{{ .Name }}</a></li>
+                {{ end }}
+            </ul>
+        </div>
+    </section>
+    {{ end }}
+
+</aside>

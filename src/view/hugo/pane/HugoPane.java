@@ -11,6 +11,7 @@ import model.hugo.Hugo;
 import model.toml.TomlConfig;
 import model.utility.CallbackVisitor;
 import model.utility.FileHandler;
+import view.filetree.FileTreeTable;
 import view.hugo.hmd.TabbedHMDPostEditor;
 import view.toml.TomlConfigEditor;
 import view.utils.ExceptionAlerter;
@@ -63,6 +64,8 @@ public class HugoPane extends Accordion {
     @FXML
     private TitledPane blogTitledPane, prefTitledPane, contentTitledPane;
 
+    private FileTreeTable fileTreeTable;
+
     public HugoPane() {
         super();
         bindFxml();
@@ -95,10 +98,22 @@ public class HugoPane extends Accordion {
         this.getStyleClass().add("hugo-pane");
     }
 
-    public void setup(String hugoSiteDirPath, TabbedHMDPostEditor tabbedHMDPostEditor) {
+    public void setup(String hugoSiteDirPath, TabbedHMDPostEditor tabbedHMDPostEditor, FileTreeTable fileTreeTable) {
         setHugoSitePaths(hugoSiteDirPath);
 
         this.tabbedHMDPostEditor = tabbedHMDPostEditor;
+        this.fileTreeTable = fileTreeTable;
+    }
+
+    private void reloadTreeTable() {
+        if (fileTreeTable != null) {
+            fileTreeTable.reloadTree();
+        }
+    }
+
+    public void setup(String hugoSiteDirPath, TabbedHMDPostEditor tabbedHMDPostEditor) {
+
+        this.setup(hugoSiteDirPath, tabbedHMDPostEditor, null);
     }
 
     public void setHugoSitePaths(String hugoSiteDirPath) {
@@ -151,11 +166,9 @@ public class HugoPane extends Accordion {
     private void updateBlogServerToggleButton() {
         if (!liveServerRunning) {
             liveBlogServerToggleButton.setText("Start Live Blog Server");
-            liveBlogServerToggleButton.setStyle("-fx-Background-Color: -fx-lightest-color;");
             openBlogInBrowserButton.setDisable(true);
         } else {
             liveBlogServerToggleButton.setText("Stop Live Blog Server");
-            liveBlogServerToggleButton.setStyle("-fx-Background-Color: #1E88E5;");
 
             openBlogInBrowserButton.setDisable(false);
         }
@@ -241,6 +254,8 @@ public class HugoPane extends Accordion {
         String selectedDir = writeContentTypeChoiceBox.getValue().getDirPath();
 
         TabbedHMDPostEditor.createNewPostAndOpen(tabbedHMDPostEditor, selectedDir);
+
+        reloadTreeTable();
     }
 
     @FXML
@@ -250,6 +265,8 @@ public class HugoPane extends Accordion {
         String oldText = createContentTypeButton.getText();
         if (FileHandler.makeDir(dirPath)) {
             contentHasChanged();
+
+            reloadTreeTable();
 
             TimedUpdaterUtil.temporaryLabeledUpdate(createContentTypeButton, "Done!");
         } else {

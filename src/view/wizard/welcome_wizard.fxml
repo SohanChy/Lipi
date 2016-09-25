@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" type="GridPane" maxHeight="-Infinity" maxWidth="-Infinity"
-         minHeight="-Infinity" minWidth="-Infinity" prefHeight="313.0" prefWidth="603.0"
-         xmlns="http://javafx.com/javafx/8.0.102-ea">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+         minWidth="-Infinity" prefHeight="313.0" prefWidth="603.0" type="GridPane"
+         xmlns="http://javafx.com/javafx/8.0.65">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.0" minWidth="10.0" prefWidth="284.0"/>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="316.0"/>
@@ -26,16 +26,16 @@
                 <Label layoutX="283.0" layoutY="67.0" text="Your blog is just a few clicks away!"/>
             </children>
         </AnchorPane>
-        <VBox alignment="CENTER" prefHeight="182.0" prefWidth="311.0" GridPane.columnIndex="1"
+        <VBox alignment="CENTER" prefHeight="182.0" prefWidth="311.0" spacing="10.0" GridPane.columnIndex="1"
               GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <children>
-                <Label alignment="CENTER" prefHeight="32.0" prefWidth="189.0" text="Recently Opened Blogs"/>
+                <Label alignment="CENTER" prefHeight="32.0" prefWidth="189.0" text="Last Opened Blog"/>
                 <AnchorPane>
                     <children>
                         <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <ListView fx:id="recentBlogsList" layoutX="27.0" prefHeight="96.0" prefWidth="262.0">
+                                <ListView fx:id="recentBlogsList" layoutX="27.0" prefHeight="42.0" prefWidth="262.0">
                                     <opaqueInsets>
                                         <Insets/>
                                     </opaqueInsets>
@@ -48,8 +48,16 @@
         </VBox>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
             <children>
-                <Button layoutX="58.0" layoutY="78.0" mnemonicParsing="false" onAction="#onCreateNewBlog"
-                        prefHeight="42.0" prefWidth="171.0" text="Create New Blog"/>
+                <VBox alignment="CENTER" layoutX="58.0" layoutY="39.0" prefHeight="156.0" prefWidth="286.0"
+                      spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onCreateNewBlog" prefHeight="42.0" prefWidth="171.0"
+                                text="Create New Blog"/>
+                        <Button mnemonicParsing="false" onAction="#onOpenOldBlog" prefHeight="42.0" prefWidth="171.0"
+                                text="Open Old Blog"/>
+                    </children>
+                </VBox>
             </children>
         </AnchorPane>
     </children>

@@ -65,12 +65,10 @@ public class RunTestsJavaFX extends Application {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-        pane.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
+
         pane.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
-
-        tabbedHMDPostEditor.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
-        tabbedHMDPostEditor.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
-
+        pane.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
+//
 
         primaryStage.setScene(new Scene(pane));
     }
@@ -84,12 +82,10 @@ public class RunTestsJavaFX extends Application {
 //      testMdEditor();
 //      testHMdPostEditor();
 //      testFileTreeControl();
-//        testHugoPane();
+//      testHugoPane();
 //      testTabbedHMdPostEditor();
-//        testTomlConfigEditor();
-
-
-//        testDashboardMain();
+//      testTomlConfigEditor();
+//      testDashboardMain();
 //
         wizard();
 
