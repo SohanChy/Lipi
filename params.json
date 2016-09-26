@@ -1,0 +1,6 @@
+{
+  "name": "Lipi",
+  "tagline": "A simple static blog generator.",
+  "body": "### Welcome to Lipi\r\nA simple static blog generator with a gui. :)\r\n(Based on hugo)",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
