@@ -1,0 +1,17 @@
+name = "Anybody Home"
+license = "MIT"
+licenselink = "https://github.com/lasseborly/anybodyhome/blob/master/LICENSE.md"
+description = "A simple theme for simple people with simeple needs"
+homepage = "https:/blog.lasseborly.dk/"
+tags = ["clean", "simple"]
+features = ["highlightjs", "Blog only"]
+min_version = 0.16
+
+[author]
+  name = "Lasse Borly <contact@lasseborly.dk"
+  homepage = "https://lasseborly.dk"
+
+[original]
+  author =  "bastard"
+  homepage = "https://github.com/lasseborly/bastard"
+  repo = "https://github.com/lasseborly/bastard"

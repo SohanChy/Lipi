@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <base href="{{ .Site.BaseURL }}">
+
+    <title>{{ .Site.Title }}</title>
+
+    <link
+            rel="canonical"
+            href="{{ .Permalink }}"
+    />
+
+    <link
+            href="{{ .RSSlink }}"
+            rel="alternate"
+            type="application/rss+xml"
+            title="{{ .Site.Title }}"
+    />
+
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css"
+    />
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js">
+    </script>
+    <script>
+      hljs.initHighlightingOnLoad();
+
+    </script>
+
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="/css/styles.css"
+    />
+</head>

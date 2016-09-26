@@ -1,0 +1,15 @@
+{{ partial "head.html"  }}
+{{ partial "header.html" . }}
+{{ $baseurl := .Site.BaseURL }}
+<div id="post">
+    <section>
+        <h2>{{ .Title }}</h2>
+        <time>{{ .Date.Format "2. January, 2006"}}</time>
+    </section>
+    <section>
+        <article>
+            {{ .Content }}
+        </article>
+    </section>
+</div>
+{{ partial "footer.html" . }}

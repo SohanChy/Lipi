@@ -1,0 +1,17 @@
+{{ partial "head.html" . }}
+
+<body>
+
+{{ partial "header.html" . }}
+
+<section>
+    {{ range (.Paginator 5).Pages }}
+    {{ .Render "summary" }}
+    {{ end }}
+</section>
+
+{{ partial "paginator.html" . }}
+
+{{ partial "footer.html" . }}
+
+</body>
