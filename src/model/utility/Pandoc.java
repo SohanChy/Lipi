@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Pandoc {
 
-    private final static String[] paramHTMLtoMD = {"-f", "html", "-t", "markdown_github"};
+    private final static String[] paramHTMLtoMD = {"-f", "html", "-t", "markdown_github-raw_html-native_divs-native_spans"};
     private final static String[] paramMDtoHTML = {"-f", "markdown_github", "-t", "html"};
     private final Ipc pandoc;
     private List<String> params;
@@ -29,6 +29,7 @@ public class Pandoc {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return md;
     }
 

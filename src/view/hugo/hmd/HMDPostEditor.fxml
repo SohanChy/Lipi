@@ -6,8 +6,7 @@
 <?import view.hugo.markdown.MarkdownEditorControl?>
 <?import view.toml.TomlEditorControl?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-         prefHeight="600.0"
-         prefWidth="1100.0" type="javafx.scene.layout.AnchorPane"
+         prefHeight="600.0" prefWidth="1100.0" type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx/8.0.102-ea">
     <padding>
         <Insets top="5.0"/>
@@ -35,7 +34,7 @@
                             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButton" text="Save"/>
                             <Button mnemonicParsing="false" onAction="#onSaveAndExit" text="Save &amp; Exit"/>
                             <Button mnemonicParsing="false" onAction="#onReloadButton" text="Reload"/>
-                            <Button mnemonicParsing="false" text="Delete"/>
+                            <Button disable="true" mnemonicParsing="false" onAction="#onSource" text="Source"/>
                         </ToolBar>
                         <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0"
                                prefWidth="301.0" text=" . . . " textAlignment="CENTER"/>

@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -55,6 +56,10 @@ public class WelcomeWizard extends GridPane {
                 t.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
                 t.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
                 editorStage.setScene(new Scene(t));
+
+                editorStage.getIcons().add(
+                        new Image(Paths.get("res/lipi-icon.png").toAbsolutePath().toUri().toString())
+                );
 
                 DashboardMain mainDashboard = new DashboardMain(selectedDirPath, t);
 

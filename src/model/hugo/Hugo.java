@@ -2,6 +2,7 @@ package model.hugo;
 
 import model.utility.CallbackVisitor;
 import model.utility.Ipc;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,6 +54,12 @@ public class Hugo {
         params.add(srcDir);
         params.add("--destination");
         params.add(pubDir);
+
+        try {
+            FileUtils.deleteDirectory(new File(pubDir));
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "Maybe no previous public folder exists.");
+        }
 
         hugoIpc.setProgArgs(params);
         hugoIpc.runProc();

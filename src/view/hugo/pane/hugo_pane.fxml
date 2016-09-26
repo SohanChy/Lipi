@@ -19,8 +19,8 @@
                                 <Button fx:id="liveBlogServerToggleButton" alignment="CENTER" contentDisplay="CENTER"
                                         mnemonicParsing="false" onAction="#onLiveBlogServerToggle"
                                         text="Start Live Blog Server"/>
-                                <Hyperlink fx:id="openBlogInBrowserButton" disable="true"
-                                           onAction="#onOpenBlogInBrowserButton" text="Open Blog in Browser"/>
+                                <Button fx:id="openBlogInBrowserButton" accessibleRole="TEXT" disable="true"
+                                        onAction="#onOpenBlogInBrowserButton" text="Open Blog in Browser"/>
                                 <Button fx:id="buildBlogButton" alignment="CENTER" contentDisplay="CENTER"
                                         mnemonicParsing="false" onAction="#onBuildBlog" text="Build Blog"/>
                                 <Label fx:id="buildStatusLabel" text="Build Status: "/>
@@ -133,9 +133,9 @@
                                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                                             <children>
                                                 <TextField fx:id="contentTypeTextField" layoutY="1.0" prefHeight="30.0"
-                                                           prefWidth="175.0" AnchorPane.bottomAnchor="0.0"
-                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                           AnchorPane.topAnchor="0.0"/>
+                                                           prefWidth="175.0" promptText="mystery"
+                                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                                             </children>
                                         </AnchorPane>
                                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1"

@@ -79,6 +79,7 @@ public class TabbedHMDPostEditor extends TabPane {
 
         hMdFile.readHMdFile();
         HMDPostEditorControl hMDEditor = new HMDPostEditorControl(hMdFile);
+        hMDEditor.setTabbedHMDPostEditor(this);
 
         this.getTabs().add(0, new Tab(hMDEditor.getFileName(), hMDEditor));
 
@@ -86,6 +87,13 @@ public class TabbedHMDPostEditor extends TabPane {
 
         editorStage.show();
         editorStage.toFront();
+    }
+
+    public void removeCurrentTab() {
+        int selectedIndex = this.getSelectionModel().getSelectedIndex();
+        this.getTabs().remove(selectedIndex);
+
+        editorStage.hide();
     }
 
 }

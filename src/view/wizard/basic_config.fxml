@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" type="GridPane" prefHeight="301.0" prefWidth="513.0"
+<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="301.0" prefWidth="513.0" type="GridPane"
          xmlns="http://javafx.com/javafx/8.0.65">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="268.0" minWidth="10.0" prefWidth="227.0"/>
@@ -31,8 +31,10 @@
                         prefWidth="86.0" text="Next"/>
             </children>
         </AnchorPane>
-        <TextField fx:id="confBlogTitleField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <TextField fx:id="confBlogAuthorField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <TextField fx:id="confBlogTitleField" promptText="Feluda's Blog" GridPane.columnIndex="1"
+                   GridPane.rowIndex="1"/>
+        <TextField fx:id="confBlogAuthorField" promptText="Pradosh C. Mitter" GridPane.columnIndex="1"
+                   GridPane.rowIndex="2"/>
         <ChoiceBox fx:id="confThemeChoice" prefHeight="26.0" prefWidth="271.0" GridPane.columnIndex="1"
                    GridPane.rowIndex="3"/>
     </children>

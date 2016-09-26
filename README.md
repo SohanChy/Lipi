@@ -1,3 +1,2 @@
 # Lipi
-Lipi BlogWizard Java project
-JavaFX based gui for Hugo static blog generator.
+A simple static blog generator with a graphical interface.

@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.web.HTMLEditor;
 import model.utility.Pandoc;
 
@@ -33,7 +34,7 @@ public class MarkdownEditorControl extends HTMLEditor {
             "}" +
             "</style>";
     private boolean banglaMode = false;
-    private Button banglaModeToggle;
+    private Button banglaModeToggle, imageInsertButton;
 
     private Pandoc pandoc;
 
@@ -43,6 +44,28 @@ public class MarkdownEditorControl extends HTMLEditor {
         pandoc = new Pandoc();
 
         customize();
+    }
+
+    private void setupImageInsertButton() {
+
+        imageInsertButton = new Button("Insert Image");
+
+//        imageInsertButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent e) {
+//                FileChooser fileChooser = new FileChooser();
+//                fileChooser.setTitle("Open Resource File");
+//                fileChooser.getExtensionFilters().addAll(
+//                        new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
+//                );
+//                File selectedFile = fileChooser.showOpenDialog(new Stage());
+//                if (selectedFile != null) {
+//                    System.out.println(selectedFile.getName());
+//                }
+//            }
+//        });
+        imageInsertButton.setTooltip(new Tooltip("Coming soon!"));
+
     }
 
     private void setupBanglaModeToggle() {
@@ -73,8 +96,10 @@ public class MarkdownEditorControl extends HTMLEditor {
         ToolBar bottomBar = (ToolBar) this.lookup(".bottom-toolbar");
 
         setupBanglaModeToggle();
+        setupImageInsertButton();
 
         topBar.getItems().add(banglaModeToggle);
+        bottomBar.getItems().add(imageInsertButton);
 
         setMdText("Hello, this is where you write :)");
     }

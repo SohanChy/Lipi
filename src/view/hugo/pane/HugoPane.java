@@ -40,7 +40,7 @@ public class HugoPane extends Accordion {
     @FXML
     private Button liveBlogServerToggleButton, buildBlogButton;
     @FXML
-    private Hyperlink openBlogInBrowserButton;
+    private Button openBlogInBrowserButton;
     @FXML
     private Label buildStatusLabel;
 
@@ -215,10 +215,13 @@ public class HugoPane extends Accordion {
         hugoBuilder.runHugoBuild(new CallbackVisitor() {
             @Override
             public void call() {
-                buildStatusLabel.setText("Build Status: Done");
+                buildStatusLabel.setText("Build Status: ...");
+                TimedUpdaterUtil.temporaryLabeledUpdate(buildStatusLabel, "Build Status: Done. \n Check the \"public\" folder");
                 buildBlogButton.setDisable(false);
             }
         });
+
+        hugoBuilder.getPubDir();
     }
 
     private void buildContentTypesList() {

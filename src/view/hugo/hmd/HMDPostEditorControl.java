@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import model.hugo.HMDFileProcessor;
 import view.hugo.markdown.MarkdownEditorControl;
 import view.toml.TomlEditorControl;
@@ -36,7 +35,7 @@ public class HMDPostEditorControl extends AnchorPane {
     @FXML
     private Label statusLabel;
 
-
+    private TabbedHMDPostEditor tabbedHMDPostEditor;
     private HMDFileProcessor hMdFile;
 
     public HMDPostEditorControl() {
@@ -67,6 +66,10 @@ public class HMDPostEditorControl extends AnchorPane {
     public void setHMdFile(HMDFileProcessor hMdFile) {
         this.hMdFile = hMdFile;
         setupEditors();
+    }
+
+    public void setTabbedHMDPostEditor(TabbedHMDPostEditor tabbedHMDPostEditor) {
+        this.tabbedHMDPostEditor = tabbedHMDPostEditor;
     }
 
     private void setupEditors() {
@@ -101,8 +104,13 @@ public class HMDPostEditorControl extends AnchorPane {
     @FXML
     private void onSaveAndExit(ActionEvent event) {
         this.save();
-        Stage stage = (Stage) this.getScene().getWindow();
-        stage.hide();
+
+        tabbedHMDPostEditor.removeCurrentTab();
+    }
+
+    @FXML
+    private void onSource(ActionEvent event) {
+        //
     }
 
 

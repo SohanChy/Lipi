@@ -27,6 +27,7 @@ import java.util.*;
 public class BasicConfig extends GridPane {
 
     public static final String hugoBlogThemesDirPath = "res/hugo-res/themes/";
+    public static final String hugoBlogExampleBlogDirPath = "res/hugo-res/exampleBlog/";
     public static final String hugoDefaultConfigFilePath = "res/hugo-res/default-config.toml";
 
 
@@ -92,7 +93,7 @@ public class BasicConfig extends GridPane {
 
         confThemeChoice.getItems().addAll(dirChoiceWrapperList);
 
-        confThemeChoice.getSelectionModel().selectFirst();
+        confThemeChoice.getSelectionModel().selectLast();
     }
 
     @FXML
@@ -149,6 +150,7 @@ public class BasicConfig extends GridPane {
 
 
                 FileUtils.copyDirectory(new File(hugoBlogThemesDirPath), new File(newBlogsPath + File.separator + "themes"));
+                FileUtils.copyDirectory(new File(hugoBlogExampleBlogDirPath), new File(newBlogsPath));
 
                 WelcomeWizard.openDirBlog(new File(newBlogsPath), primaryStage);
 

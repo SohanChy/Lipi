@@ -21,6 +21,10 @@ public class HMDFileProcessor {
         return mdFile.getName();
     }
 
+    public File getFile() {
+        return mdFile;
+    }
+
     public boolean isValidMd() {
         return validMd;
     }
