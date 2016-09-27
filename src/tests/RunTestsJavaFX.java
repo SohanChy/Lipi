@@ -85,9 +85,9 @@ public class RunTestsJavaFX extends Application {
 //      testHugoPane();
 //      testTabbedHMdPostEditor();
 //      testTomlConfigEditor();
-//      testDashboardMain();
+        testDashboardMain();
 //
-        wizard();
+//        wizard();
 
         primaryStage.show();
     }

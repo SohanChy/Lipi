@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import model.toml.TomlConfig;
 import view.dashboard.DashboardMain;
 import view.hugo.hmd.TabbedHMDPostEditor;
 import view.utils.ExceptionAlerter;
@@ -43,28 +44,31 @@ public class WelcomeWizard extends GridPane {
     public static void openDirBlog(File blogDir, Stage primaryStage) {
         if (blogDir != null) {
             try {
+                primaryStage.close();
                 String selectedDirPath = blogDir.getCanonicalPath();
 
                 //history is saved
                 WelcomeWizard.storeBlogHistory(selectedDirPath);
 
+                TomlConfig tomlConfig = new TomlConfig(selectedDirPath + File.separator + "config.toml");
 
-                primaryStage.setTitle("Blog Dashboard - Lipi");
+                primaryStage.setTitle("Blog Dashboard: " + tomlConfig.getTomlMap().get("Title").toString() + " - Lipi");
 
                 Stage editorStage = new Stage();
+                editorStage.setTitle("Lipi Post Editor");
                 TabbedHMDPostEditor t = new TabbedHMDPostEditor(editorStage);
                 t.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
                 t.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
                 editorStage.setScene(new Scene(t));
 
                 editorStage.getIcons().add(
-                        new Image(Paths.get("res/lipi-icon.png").toAbsolutePath().toUri().toString())
+                        new Image(Paths.get("res/lipi-hmdeditor-icon.png").toAbsolutePath().toUri().toString())
                 );
 
                 DashboardMain mainDashboard = new DashboardMain(selectedDirPath, t);
 
                 VBox holder = new VBox();
-                holder.setMinHeight(680);
+//                holder.setMinHeight(680);
                 holder.setMinWidth(1000);
                 holder.getChildren().add(mainDashboard);
 
@@ -75,9 +79,10 @@ public class WelcomeWizard extends GridPane {
 
                 primaryStage.setScene(scene);
 
-                primaryStage.setMinHeight(680);
+//                primaryStage.setMinHeight(680);
                 primaryStage.setMinWidth(1000);
 
+                primaryStage.show();
                 primaryStage.centerOnScreen();
 
 

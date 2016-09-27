@@ -5,9 +5,9 @@
 {{ partial "header.html" . }}
 
 <section>
-    {{ range (.Paginator 5).Pages }}
+  {{ range (.Paginator 5).Pages }} 
     {{ .Render "summary" }}
-    {{ end }}
+  {{ end }}
 </section>
 
 {{ partial "paginator.html" . }}

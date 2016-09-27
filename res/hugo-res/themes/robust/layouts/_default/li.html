@@ -1,14 +1,11 @@
 <article class="li">
-    <a href="{{ .Permalink }}" class="clearfix">
-        <div class="image"
-             style="background-image: url({{ $.Site.BaseURL }}images/{{ with .Params.image }}{{ . }}{{ else }}default.jpg{{ end }});"></div>
-        <footer>
-            <div class="date">
-                <time>{{ with .Site.Params.DateForm }}{{ $.Date.Format . }}{{ else }}{{ $.Date.Format "Mon, Jan 2, 2006"
-                    }}{{ end }}
-                </time>
-            </div>
-            <h2 class="title">{{ .Title }}</h2>
-        </footer>
-    </a>
+  <a href="{{ .Permalink }}" class="clearfix">
+    <div class="image" style="background-image: url({{ $.Site.BaseURL }}images/{{ with .Params.image }}{{ . }}{{ else }}default.jpg{{ end }});"></div>
+    <footer>
+      <div class="date">
+        <time>{{ with .Site.Params.DateForm }}{{ $.Date.Format . }}{{ else }}{{ $.Date.Format "Mon, Jan 2, 2006" }}{{ end }}</time>
+      </div>
+      <h2 class="title">{{ .Title }}</h2>
+    </footer>
+  </a>
 </article>

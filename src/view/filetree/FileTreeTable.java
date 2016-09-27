@@ -359,20 +359,16 @@ public class FileTreeTable extends AnchorPane {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
 
-                    String msg;
-                    if (file.delete()) {
-                        msg = "Deleted Successfully";
-                    } else {
-                        msg = "Delete FAILED!";
+                    if (!file.delete()) {
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Delete FAILED");
+                        alert.setHeaderText(null);
+                        alert.setContentText("You tried to delete " + file.getName() + ".\n"
+                                + "but the Delete operation FAILED!\n" +
+                                "Check error/exception for details."
+                        );
+                        alert.showAndWait();
                     }
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle(msg);
-                    alert.setHeaderText(null);
-                    alert.setContentText("You tried to delete " + file.getName() + ".\n"
-                            + msg
-                    );
-
-                    alert.showAndWait();
 
                     buildFileBrowserTreeTableView(treeTableView);
                 }

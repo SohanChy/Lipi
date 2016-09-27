@@ -2,28 +2,28 @@
 {{ partial "header_after.html" . }}
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-9">
+  <div class="row">
+    <div class="col-md-9">
 
-            <h1 class="p-page-title">{{ .Title }}</h1>
+      <h1 class="p-page-title">{{ .Title }}</h1>
 
-            <div class="row">
-                {{ range (.Paginate .Data.Pages).Pages }}
-                <div class="col-sm-4">
-                    {{ .Render "grid" }}
-                </div>
-                {{ end }}
-            </div>
-
-            {{ partial "pagination.html" . }}
-
+      <div class="row">
+        {{ range (.Paginate .Data.Pages).Pages }}
+        <div class="col-sm-4">
+          {{ .Render "grid" }}
         </div>
+        {{ end }}
+      </div>
 
-        <div class="col-md-3">
-            {{ partial "sidebar.html" . }}
-        </div>
+      {{ partial "pagination.html" . }}
 
     </div>
+
+    <div class="col-md-3">
+      {{ partial "sidebar.html" . }}
+    </div>
+
+  </div>
 
 </div>
 

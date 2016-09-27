@@ -120,7 +120,7 @@ public class HugoPane extends Accordion {
         this.hugoBlogRootDirPath = hugoSiteDirPath;
         this.hugoBlogContentDirPath = hugoSiteDirPath + File.separator + "content";
         this.hugoBlogThemesDirPath = hugoSiteDirPath + File.separator + "themes";
-
+        this.hugoBlogOutputDirPath = hugoSiteDirPath + File.separator + "public";
         this.hugoSiteConfigFilePath = hugoSiteDirPath + File.separator + "config.toml";
 
         setupConfBlog();
@@ -208,6 +208,35 @@ public class HugoPane extends Accordion {
 
     @FXML
     private void onBuildBlog() {
+
+        TomlConfig tomlConfig = new TomlConfig(hugoSiteConfigFilePath);
+
+        TextInputDialog dialog = new TextInputDialog(tomlConfig.getTomlMap().get("BaseURL").toString());
+
+        dialog.setTitle("Confirm BaseUrl");
+
+        dialog.setHeaderText("Where will you upload your site?\n" +
+                "Ex: mywebsite.com/blog \n" +
+                "If upload is in root ex: mywebsite.com then you can leave this as \"/\"\n" +
+                "(If you don't understand just click OK)");
+        dialog.setContentText("Blog Upload BaseUrl: ");
+
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            Map<String, Object> tomlConfigMap = tomlConfig.getTomlMap();
+            tomlConfigMap.put("BaseURL", result.get());
+
+            tomlConfig.setTomlMap(tomlConfigMap);
+            tomlConfig.writeTomlMap();
+
+            buildBlog();
+        }
+
+    }
+
+
+    private void buildBlog() {
         buildBlogButton.setDisable(true);
         buildStatusLabel.setText("Build Status: Building...");
         Hugo hugoBuilder = new Hugo(hugoBlogRootDirPath);
@@ -216,12 +245,31 @@ public class HugoPane extends Accordion {
             @Override
             public void call() {
                 buildStatusLabel.setText("Build Status: ...");
-                TimedUpdaterUtil.temporaryLabeledUpdate(buildStatusLabel, "Build Status: Done. \n Check the \"public\" folder");
+                TimedUpdaterUtil.temporaryLabeledUpdate(buildStatusLabel, "Build Status: Done.");
+                showBuildSuccess();
                 buildBlogButton.setDisable(false);
             }
         });
 
         hugoBuilder.getPubDir();
+    }
+
+    private void showBuildSuccess() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Build Successful");
+        alert.setHeaderText("Your blog was built successfully!");
+        alert.setContentText("You can find the static files at:");
+
+        TextArea textArea = new TextArea(hugoBlogOutputDirPath);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setPrefRowCount(2);
+        // Set expandable Exception into the dialog pane.
+        alert.getDialogPane().setExpandableContent(textArea);
+        alert.getDialogPane().setExpanded(true);
+        alert.showAndWait();
     }
 
     private void buildContentTypesList() {

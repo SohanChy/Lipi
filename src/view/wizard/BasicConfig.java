@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -58,6 +59,8 @@ public class BasicConfig extends GridPane {
         }
 
         this.getStyleClass().add("basic-config");
+        this.getStylesheets().add(Paths.get("res/material.css").toAbsolutePath().toUri().toString());
+        this.getStylesheets().add(Paths.get("res/custom.css").toAbsolutePath().toUri().toString());
     }
 
     private void setupGui() {
