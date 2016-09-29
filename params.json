@@ -1,6 +1,6 @@
 {
   "name": "Lipi",
   "tagline": "A simple static blog generator.",
-  "body": "### Welcome to Lipi\r\nA simple static blog generator with a gui. :)\r\n(Based on hugo)",
+  "body": "Welcome to Lipi, a simple static blog creator\r\n-------\r\n#### Why ####\r\n - No distractions, no hasle, just click and write, and your blog is ready. \r\n - Upload anywhere that supports HTML(web server, github, even dropbox, etc) and the world can see it!\r\n - All the awesome benefits of static sites with dynamicity handled using hugo\r\n\r\n#### How ####\r\nCreated with JavaFX8, using hugo, pandocs and some java dependencies that will be added to the readme files later.\r\n\r\n#### What ####\r\nThis is the first ever public beta release of Lipi, so there will be bugs!\r\nIf you find a bug or need a feature, feel free to open an issue or email me sifat3d@gmail.com\r\n\r\n#### Download ####\r\nFor download and install instructions, visit the releases page:\r\n[https://github.com/SohanChy/Lipi/releases](https://github.com/SohanChy/Lipi/releases)\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
