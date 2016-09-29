@@ -15,3 +15,13 @@ If you find a bug or need a feature, feel free to open an issue or email me sifa
 #### Download ####
 For download and install instructions, visit the releases page:
 [https://github.com/SohanChy/Lipi/releases](https://github.com/SohanChy/Lipi/releases)
+
+Screenshots
+-------
+![1](https://i.imgur.com/XIQLKcT.png)
+
+![2](https://i.imgur.com/rxpNgdr.png)
+
+![3](https://i.imgur.com/8Tu9bI1.png)
+
+![4](https://i.imgur.com/uD4aPyf.png)
