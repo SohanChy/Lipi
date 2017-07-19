@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
          minWidth="-Infinity" prefHeight="500.0" prefWidth="292.0" type="javafx.scene.control.Accordion"
-         xmlns="http://javafx.com/javafx/8.0.65">
+         xmlns="http://javafx.com/javafx/8.0.121">
     <panes>
         <TitledPane fx:id="blogTitledPane" animated="false" styleClass="bg-theme-dark"
                     text="Blog (Live Preview, Publish)">
@@ -71,6 +71,15 @@
                                                 onAction="#onOpenAdvancedConfig" text="Open Advanced Config"/>
                                     </children>
                                 </AnchorPane>
+                                <Separator prefWidth="200.0"/>
+                                <FlowPane layoutX="10.0" layoutY="252.0" prefHeight="36.0" prefWidth="270.0">
+                                    <children>
+                                        <Label prefHeight="34.0" prefWidth="187.0"
+                                               text="Auto Open This Blog In Lipi: "/>
+                                        <CheckBox fx:id="autoOpenCheckBox" mnemonicParsing="false"
+                                                  onAction="#autoOpenClicked"/>
+                                    </children>
+                                </FlowPane>
                             </children>
                         </VBox>
                     </children>

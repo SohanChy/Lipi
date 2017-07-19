@@ -6,8 +6,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -17,7 +15,6 @@ import model.hugo.HMDFileProcessor;
 import model.utility.FileHandler;
 import view.dashboard.DashboardMain;
 import view.filetree.FileTreeTable;
-import view.hugo.hmd.HMDPostEditorControl;
 import view.hugo.hmd.TabbedHMDPostEditor;
 import view.hugo.markdown.MarkdownEditorControl;
 import view.hugo.pane.HostServicesProviderUtil;
@@ -141,23 +138,23 @@ public class RunTestsJavaFX extends Application {
         primaryStage.setTitle("Markdown Editor");
     }
 
-    public void testHMdPostEditor() {
-
-        HMDFileProcessor mdObject = new HMDFileProcessor(testsFolder + "/test.md");
-        mdObject.readHMdFile();
-        HMDPostEditorControl hMDEditor = new HMDPostEditorControl(mdObject);
-        TabPane p = new TabPane();
-        p.getTabs().add(0, new Tab(hMDEditor.getFileName(), hMDEditor));
-
-        mdObject = new HMDFileProcessor(testsFolder + "/tomlParserTest.md");
-        mdObject.readHMdFile();
-        hMDEditor = new HMDPostEditorControl(mdObject);
-        p.getTabs().add(1, new Tab(hMDEditor.getFileName(), hMDEditor));
-
-        pane.getChildren().add(p);
-
-        primaryStage.setTitle("Post Editor");
-    }
+//    public void testHMdPostEditor() {
+//
+//        HMDFileProcessor mdObject = new HMDFileProcessor(testsFolder + "/test.md");
+//        mdObject.readHMdFile();
+//        HMDPostEditorControl hMDEditor = new HMDPostEditorControl(mdObject,);
+//        TabPane p = new TabPane();
+//        p.getTabs().add(0, new Tab(hMDEditor.getFileName(), hMDEditor));
+//
+//        mdObject = new HMDFileProcessor(testsFolder + "/tomlParserTest.md");
+//        mdObject.readHMdFile();
+//        hMDEditor = new HMDPostEditorControl(mdObject,testsFolder);
+//        p.getTabs().add(1, new Tab(hMDEditor.getFileName(), hMDEditor));
+//
+//        pane.getChildren().add(p);
+//
+//        primaryStage.setTitle("Post Editor");
+//    }
 
     public void testFileTreeControl() {
 

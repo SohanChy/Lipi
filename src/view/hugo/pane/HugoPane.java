@@ -20,6 +20,7 @@ import view.utils.TimedUpdaterUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.prefs.Preferences;
 
 /**
  * Created by Sohan Chowdhury on 8/21/16.
@@ -28,6 +29,8 @@ import java.util.*;
  */
 public class HugoPane extends Accordion {
 
+    @FXML
+    CheckBox autoOpenCheckBox;
     //Config Editor
     @FXML
     private TextField confBlogTitleField, confBlogAuthorField, confBlogDisqusField;
@@ -35,7 +38,6 @@ public class HugoPane extends Accordion {
     private ChoiceBox<DirChoiceWrapper> confBlogThemeVBox;
     @FXML
     private Button confBlogPrefSaveButton;
-
     //BLOG
     @FXML
     private Button liveBlogServerToggleButton, buildBlogButton;
@@ -43,7 +45,6 @@ public class HugoPane extends Accordion {
     private Button openBlogInBrowserButton;
     @FXML
     private Label buildStatusLabel;
-
     //Content
     @FXML
     private ChoiceBox<DirChoiceWrapper> writeContentTypeChoiceBox;
@@ -51,19 +52,14 @@ public class HugoPane extends Accordion {
     private Button createContentTypeButton;
     @FXML
     private TextField contentTypeTextField;
-
     //Main LOGIC
     private String hugoBlogRootDirPath, hugoBlogOutputDirPath, hugoBlogContentDirPath, hugoBlogThemesDirPath;
     private String hugoSiteConfigFilePath;
-
     private boolean liveServerRunning = false;
     private Hugo hugoServer;
-
     private TabbedHMDPostEditor tabbedHMDPostEditor;
-
     @FXML
     private TitledPane blogTitledPane, prefTitledPane, contentTitledPane;
-
     private FileTreeTable fileTreeTable;
 
     public HugoPane() {
@@ -71,6 +67,12 @@ public class HugoPane extends Accordion {
         bindFxml();
 
         setupGui();
+
+        String autoOpen = Preferences.userNodeForPackage(view.wizard.WelcomeWizard.class).get("auto_open", "false");
+        if (autoOpen.equals("true")) {
+            autoOpenCheckBox.setSelected(true);
+
+        }
     }
 
     private void setupGui() {
@@ -234,7 +236,6 @@ public class HugoPane extends Accordion {
         }
 
     }
-
 
     private void buildBlog() {
         buildBlogButton.setDisable(true);
@@ -411,6 +412,15 @@ public class HugoPane extends Accordion {
         tomlConfig.writeTomlMap();
 
         TimedUpdaterUtil.temporaryLabeledUpdate(confBlogPrefSaveButton, "Saved.");
+    }
+
+    @FXML
+    private void autoOpenClicked() {
+        if (autoOpenCheckBox.isSelected()) {
+            Preferences.userNodeForPackage(view.wizard.WelcomeWizard.class).put("auto_open", "true");
+        } else {
+            Preferences.userNodeForPackage(view.wizard.WelcomeWizard.class).put("auto_open", "false");
+        }
     }
 
     //For wrapping directory chosen

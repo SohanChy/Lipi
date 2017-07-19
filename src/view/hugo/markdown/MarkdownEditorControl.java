@@ -3,10 +3,21 @@ package view.hugo.markdown;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.web.HTMLEditor;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.utility.Pandoc;
+import org.apache.commons.io.FileUtils;
+import view.utils.ExceptionAlerter;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Optional;
 
 /**
  * Created by Sohan Chowdhury on 8/14/16.
@@ -33,9 +44,9 @@ public class MarkdownEditorControl extends HTMLEditor {
             "background-color: #f0f0f0;" +
             "}" +
             "</style>";
+    public String blogDir;
     private boolean banglaMode = false;
     private Button banglaModeToggle, imageInsertButton;
-
     private Pandoc pandoc;
 
     public MarkdownEditorControl() {
@@ -50,20 +61,41 @@ public class MarkdownEditorControl extends HTMLEditor {
 
         imageInsertButton = new Button("Insert Image");
 
-//        imageInsertButton.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent e) {
-//                FileChooser fileChooser = new FileChooser();
-//                fileChooser.setTitle("Open Resource File");
-//                fileChooser.getExtensionFilters().addAll(
-//                        new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
-//                );
-//                File selectedFile = fileChooser.showOpenDialog(new Stage());
-//                if (selectedFile != null) {
-//                    System.out.println(selectedFile.getName());
-//                }
-//            }
-//        });
+        imageInsertButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open Resource File");
+                fileChooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
+                );
+                File selectedFile = fileChooser.showOpenDialog(new Stage());
+                if (selectedFile != null) {
+                    try {
+                        File dir = new File(blogDir + "/static/images/" + new SimpleDateFormat("yyyy_MM_dd").format(new Date()));
+                        dir.mkdirs();
+                        FileUtils.copyFileToDirectory(selectedFile, dir);
+                        String copiedFile = dir.getCanonicalPath() + "/" + selectedFile.getName();
+
+                        TextInputDialog dialog = new TextInputDialog("Image Alt Text");
+                        dialog.setTitle("Image Description Input Dialog");
+                        dialog.setHeaderText("ALT TEXT for the Image");
+                        dialog.setContentText("Please enter a small description:");
+
+                        String altText = "";
+                        // Traditional way to get the response value.
+                        Optional<String> result = dialog.showAndWait();
+                        if (result.isPresent()) {
+                            altText = result.get();
+                        }
+                        setMdText(getMdText() + "![" + altText + "](file://" + copiedFile + ")");
+
+                    } catch (IOException e1) {
+                        ExceptionAlerter.showException(e1);
+                    }
+                }
+            }
+        });
         imageInsertButton.setTooltip(new Tooltip("Coming soon!"));
 
     }
@@ -106,13 +138,23 @@ public class MarkdownEditorControl extends HTMLEditor {
 
 
     public String getMdText() {
-        return (pandoc.htmlToMd(getHtmlText()));
+        String md = pandoc.htmlToMd(getHtmlText());
+        return (removeAbsoluteImagePaths(md));
     }
 
     public void setMdText(String md) {
         setHtmlText("Loading...");
 
+        md = InsertAbsoluteImagePaths(md);
         setHtmlText((editorBgColorStyle + getFontStyle() + pandoc.mdToHtml(md)));
+    }
+
+    public String InsertAbsoluteImagePaths(String md) {
+        return md.replace("](/", "](file://" + blogDir + "/static/");
+    }
+
+    public String removeAbsoluteImagePaths(String md) {
+        return md.replace("](file://" + blogDir + "/static/", "](/");
     }
 
     private void setBanglaMode(boolean forceBangla) {

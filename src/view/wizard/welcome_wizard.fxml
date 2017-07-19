@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
          minWidth="-Infinity" prefHeight="313.0" prefWidth="603.0" type="GridPane"
-         xmlns="http://javafx.com/javafx/8.0.65">
+         xmlns="http://javafx.com/javafx/8.0.121">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.0" minWidth="10.0" prefWidth="284.0"/>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="316.0"/>
@@ -29,7 +29,8 @@
         <VBox alignment="CENTER" prefHeight="182.0" prefWidth="311.0" spacing="10.0" GridPane.columnIndex="1"
               GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <children>
-                <Label alignment="CENTER" prefHeight="32.0" prefWidth="189.0" text="Last Opened Blog"/>
+                <CheckBox fx:id="autoOpenCheckBox" mnemonicParsing="false" onAction="#autoOpenClicked"
+                          text="Auto Open Last Opened Blog"/>
                 <AnchorPane>
                     <children>
                         <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

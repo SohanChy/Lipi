@@ -42,11 +42,11 @@ public class HMDPostEditorControl extends AnchorPane {
         bindFxml();
     }
 
-    public HMDPostEditorControl(HMDFileProcessor hMdFile) {
+    public HMDPostEditorControl(HMDFileProcessor hMdFile, TabbedHMDPostEditor tabbedHMDPostEditor) {
         this();
         this.hMdFile = hMdFile;
+        setTabbedHMDPostEditor(tabbedHMDPostEditor);
         setHMdFile(hMdFile);
-
     }
 
     private void bindFxml() {
@@ -126,7 +126,9 @@ public class HMDPostEditorControl extends AnchorPane {
 //        System.out.println("toml done");
 
 //        System.out.println("Read md postcontent");
+        markdownEditorControl.blogDir = tabbedHMDPostEditor.blogDir;
         markdownEditorControl.setMdText(this.hMdFile.getPostContent());
+
 //        System.out.println("reading postcontent done");
     }
 

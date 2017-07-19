@@ -1,9 +1,11 @@
 package view.wizard;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -30,7 +32,8 @@ import java.util.prefs.Preferences;
 public class WelcomeWizard extends GridPane {
 
     Stage primaryStage;
-
+    @FXML
+    CheckBox autoOpenCheckBox;
     @FXML
     private ListView recentBlogsList;
 
@@ -116,6 +119,24 @@ public class WelcomeWizard extends GridPane {
                     openDirBlog(new File(blogHistoryDir), primaryStage);
                 }
             });
+
+            String autoOpen = Preferences.userNodeForPackage(view.wizard.WelcomeWizard.class).get("auto_open", "false");
+            if (autoOpen.equals("true")) {
+                Platform.runLater(() -> {
+                    openDirBlog(new File(blogHistoryDir), primaryStage);
+                });
+            }
+
+        }
+    }
+
+    @FXML
+    private void autoOpenClicked() {
+
+        if (autoOpenCheckBox.isSelected()) {
+            Preferences.userNodeForPackage(view.wizard.WelcomeWizard.class).put("auto_open", "true");
+        } else {
+            Preferences.userNodeForPackage(view.wizard.WelcomeWizard.class).put("auto_open", "false");
         }
     }
 

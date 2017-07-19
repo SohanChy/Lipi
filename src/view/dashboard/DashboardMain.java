@@ -36,6 +36,7 @@ public class DashboardMain extends BorderPane {
     public void initComponents() {
         fileTreeTableComponent.setup(hugoBlogRootDirPath, tabbedHMDPostEditor);
         hugoPaneComponent.setup(hugoBlogRootDirPath, tabbedHMDPostEditor, fileTreeTableComponent);
+        this.tabbedHMDPostEditor.blogDir = hugoBlogRootDirPath;
 
     }
 

@@ -20,6 +20,7 @@ import java.text.Normalizer;
  */
 public class TabbedHMDPostEditor extends TabPane {
 
+    public String blogDir;
     private Stage editorStage;
 
     public TabbedHMDPostEditor(Stage editorStage) {
@@ -39,7 +40,7 @@ public class TabbedHMDPostEditor extends TabPane {
             String genFilePath = targetDir + File.separator + genFilename;
 
             HMDFileCreator newPost = new HMDFileCreator(genFilePath);
-            newPost.setupAndMakeFile(createPostDialog.getFirstInput(), createPostDialog.getSecondInput(), "");
+            newPost.setupAndMakeFile(createPostDialog.getFirstInput(), createPostDialog.getSecondInput().replaceAll("(\\r|\\n|\\r\\n)+", "\\\\n "), "");
 
             tabbedHMDPostEditor.addTab(new HMDFileProcessor(genFilePath));
         }
@@ -78,8 +79,9 @@ public class TabbedHMDPostEditor extends TabPane {
     public void addTab(HMDFileProcessor hMdFile) {
 
         hMdFile.readHMdFile();
-        HMDPostEditorControl hMDEditor = new HMDPostEditorControl(hMdFile);
-        hMDEditor.setTabbedHMDPostEditor(this);
+        HMDPostEditorControl hMDEditor = new HMDPostEditorControl(hMdFile, this);
+
+//        hMDEditor.setTabbedHMDPostEditor(this);
 
         this.getTabs().add(0, new Tab(hMDEditor.getFileName(), hMDEditor));
 
