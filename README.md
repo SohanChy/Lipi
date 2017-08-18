@@ -13,7 +13,7 @@ And tries make Hugo more easy to use day to day without having to remember any p
 #### Why ####
  - No need to remember or type commands so no distractions
  - Just click buttons, write thoughts, and your blog is ready.
- - Upload anywhere that supports HTML(web server, github, even dropbox, etc) and the world can see it!
+ - Upload anywhere that supports HTML (web server, github, even dropbox, etc) and the world can see it!
  - All the awesome benefits of static sites with dynamicity handled using hugo
 
 #### How ####
