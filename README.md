@@ -18,10 +18,11 @@ And tries make Hugo more easy to use day to day without having to remember any p
 
 #### How ####
 Created with JavaFX8, using:
-Hugo : https://github.com/gohugoio/hugo
-Pandoc : https://github.com/jgm/pandoc
-Toml4j : https://github.com/mwanji/toml4j
-Gson : https://github.com/google/gson
+
+ - Hugo : https://github.com/gohugoio/hugo
+ - Pandoc : https://github.com/jgm/pandoc
+ - Toml4j : https://github.com/mwanji/toml4j
+ - Gson : https://github.com/google/gson
 
 This is the second public beta release of Lipi, so there might be bugs!
 If you find a bug or need a feature, feel free to open an issue or email me sifat3d@gmail.com
