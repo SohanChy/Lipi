@@ -213,7 +213,7 @@ public class HugoPane extends Accordion {
 
         TomlConfig tomlConfig = new TomlConfig(hugoSiteConfigFilePath);
 
-        TextInputDialog dialog = new TextInputDialog(tomlConfig.getTomlMap().get("BaseURL").toString());
+        TextInputDialog dialog = new TextInputDialog(tomlConfig.getTomlMap().get("baseURL").toString());
 
         dialog.setTitle("Confirm BaseUrl");
 
@@ -227,7 +227,7 @@ public class HugoPane extends Accordion {
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             Map<String, Object> tomlConfigMap = tomlConfig.getTomlMap();
-            tomlConfigMap.put("BaseURL", result.get());
+            tomlConfigMap.put("baseURL", result.get());
 
             tomlConfig.setTomlMap(tomlConfigMap);
             tomlConfig.writeTomlMap();
@@ -344,12 +344,12 @@ public class HugoPane extends Accordion {
     private void setupConfBlog() {
         TomlConfig tomlConfig = new TomlConfig(hugoSiteConfigFilePath);
 
-        confBlogTitleField.setText(tomlConfig.getTomlMap().get("Title").toString());
+        confBlogTitleField.setText(tomlConfig.getTomlMap().get("title").toString());
 
         setupConfBlogThemeVBox(tomlConfig);
 
 
-        Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("Params");
+        Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("params");
 
         String paramAuthor = (String) paramsMap.get("Author");
         String paramDisqus = (String) paramsMap.get("Disqus");
@@ -396,15 +396,15 @@ public class HugoPane extends Accordion {
 
         Map<String, Object> mainTomlConfigMap = tomlConfig.getTomlMap();
 
-        mainTomlConfigMap.put("Title", userBlogTitle);
+        mainTomlConfigMap.put("title", userBlogTitle);
         mainTomlConfigMap.put("theme", userBlogTheme);
 
-        Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("Params");
+        Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("params");
 
         paramsMap.put("Author", userBlogParamAuthor);
         paramsMap.put("Disqus", userBlogParamDisqus);
 
-        mainTomlConfigMap.put("Params", paramsMap);
+        mainTomlConfigMap.put("params", paramsMap);
 
         tomlConfig.setTomlMap(mainTomlConfigMap);
 

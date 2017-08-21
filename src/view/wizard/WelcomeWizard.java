@@ -55,7 +55,7 @@ public class WelcomeWizard extends GridPane {
 
                 TomlConfig tomlConfig = new TomlConfig(selectedDirPath + File.separator + "config.toml");
 
-                primaryStage.setTitle("Blog Dashboard: " + tomlConfig.getTomlMap().get("Title").toString() + " - Lipi");
+                primaryStage.setTitle("Blog Dashboard: " + tomlConfig.getTomlMap().get("title").toString() + " - Lipi");
 
                 Stage editorStage = new Stage();
                 editorStage.setTitle("Lipi Post Editor");

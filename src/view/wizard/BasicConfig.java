@@ -136,14 +136,14 @@ public class BasicConfig extends GridPane {
 
                 Map<String, Object> mainTomlConfigMap = tomlConfig.getTomlMap();
 
-                mainTomlConfigMap.put("Title", confBlogNameText);
+                mainTomlConfigMap.put("title", confBlogNameText);
                 mainTomlConfigMap.put("theme", confBlogThemeText);
 
-                Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("Params");
+                Map<String, Object> paramsMap = (Map<String, Object>) tomlConfig.getTomlMap().get("params");
 
                 paramsMap.put("Author", confAuthorNameText);
 
-                mainTomlConfigMap.put("Params", paramsMap);
+                mainTomlConfigMap.put("params", paramsMap);
 
                 tomlConfig.setTomlMap(mainTomlConfigMap);
 
