@@ -8,3 +8,6 @@
 exec/
 lib/
 out/
+
+#maven output folder
+target/

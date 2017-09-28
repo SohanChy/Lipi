@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.sohanchy</groupId>
+  <artifactId>lipi</artifactId>
+  <version>0.7.0-beta</version>
+  <!--<packaging>jar</packaging>-->
+
+  <name>Lipi</name>
+  <url>https://github.com/SohanChy/Lipi</url>
+  <description>Lipi brings the the awesomeness of Hugo wrapped in a GUI.</description>
+
+  <scm>
+    <connection>scm:git:git@github.com:sohanChy/Lipi</connection>
+    <url>scm:git:git@github.com:sohanChy/Lipi</url>
+    <developerConnection>scm:git:git@github.com:sohanChy/Lipi</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>https://github.com/SohanChy/Lipi/blob/master/LICENSE</url>
+    </license>
+  </licenses>
+
+  <issueManagement>
+    <system>GitHub issues</system>
+    <url>https://github.com/SohanChy/Lipi/issues</url>
+  </issueManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.moandjiezana.toml</groupId>
+      <artifactId>toml4j</artifactId>
+      <version>0.7.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.guigarage</groupId>
+      <artifactId>flatter</artifactId>
+      <version>0.7</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.5</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>src</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+      </resource>
+      <resource>
+        <directory>res</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>tests-res</directory>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <configuration>
+          <mainClass>Lipi</mainClass>
+          <arguments>
+            <!-- <argument></argument> -->
+          </arguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
