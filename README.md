@@ -5,6 +5,11 @@ With its amazing speed and flexibility, Hugo makes building websites fun again.
 
 Lipi brings the the awesomeness of Hugo wrapped in a GUI, and tries make Hugo more easy to use day to day without having to remember any pesky commands.
 
+#### Notice October 2020 
+> - I no longer maintain this project
+> - If you are interested in extending or helping out please reach out
+> - I have distant plans to completely rebuild Lipi as an Electron App(ReactJs based), if there is interest please let me know.
+
 #### Changelog
 > - Now images can be added to post using the Insert Image button on the editor.
 > - An option to auto open last opened blog has been added as well.
